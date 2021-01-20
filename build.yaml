@@ -1,0 +1,14 @@
+targets:
+  $default:
+    builders:
+      freezed:
+        generate_for:
+          include:
+            - lib/use_case/**/*.dart
+            - lib/views/*.dart
+            - lib/views/**/*.dart
+      flamingo_generator|field_value_generator:
+        generate_for:
+          include:
+            - lib/models/*.dart
+            - lib/models/**/*.dart

@@ -1,0 +1,3 @@
+include: package:pedantic_mono/analysis_options.yaml
+#　下は規則がゆるいバージョン
+# include: package:pedantic_mono/analysis_options_flutter_samples.yaml
