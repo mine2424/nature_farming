@@ -22,6 +22,12 @@ class User extends Base<User> {
   @Field()
   String userId;
 
+  @Field()
+  String content;
+
+  @Field()
+  Future<String> fmcToken;
+
   /// プロフィール写真
   @StorageField()
   StorageFile image;

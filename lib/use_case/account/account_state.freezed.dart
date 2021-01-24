@@ -14,9 +14,12 @@ class _$AccountStateTearOff {
   const _$AccountStateTearOff();
 
 // ignore: unused_element
-  _AccountState call({bool isLoading = false}) {
+  _AccountState call(
+      {bool isLoading = false, String name = '', String content = ''}) {
     return _AccountState(
       isLoading: isLoading,
+      name: name,
+      content: content,
     );
   }
 }
@@ -28,6 +31,8 @@ const $AccountState = _$AccountStateTearOff();
 /// @nodoc
 mixin _$AccountState {
   bool get isLoading;
+  String get name;
+  String get content;
 
   @JsonKey(ignore: true)
   $AccountStateCopyWith<AccountState> get copyWith;
@@ -38,7 +43,7 @@ abstract class $AccountStateCopyWith<$Res> {
   factory $AccountStateCopyWith(
           AccountState value, $Res Function(AccountState) then) =
       _$AccountStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String name, String content});
 }
 
 /// @nodoc
@@ -52,9 +57,13 @@ class _$AccountStateCopyWithImpl<$Res> implements $AccountStateCopyWith<$Res> {
   @override
   $Res call({
     Object isLoading = freezed,
+    Object name = freezed,
+    Object content = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      name: name == freezed ? _value.name : name as String,
+      content: content == freezed ? _value.content : content as String,
     ));
   }
 }
@@ -66,7 +75,7 @@ abstract class _$AccountStateCopyWith<$Res>
           _AccountState value, $Res Function(_AccountState) then) =
       __$AccountStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading});
+  $Res call({bool isLoading, String name, String content});
 }
 
 /// @nodoc
@@ -82,24 +91,38 @@ class __$AccountStateCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isLoading = freezed,
+    Object name = freezed,
+    Object content = freezed,
   }) {
     return _then(_AccountState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      name: name == freezed ? _value.name : name as String,
+      content: content == freezed ? _value.content : content as String,
     ));
   }
 }
 
 /// @nodoc
 class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
-  const _$_AccountState({this.isLoading = false}) : assert(isLoading != null);
+  const _$_AccountState(
+      {this.isLoading = false, this.name = '', this.content = ''})
+      : assert(isLoading != null),
+        assert(name != null),
+        assert(content != null);
 
   @JsonKey(defaultValue: false)
   @override
   final bool isLoading;
+  @JsonKey(defaultValue: '')
+  @override
+  final String name;
+  @JsonKey(defaultValue: '')
+  @override
+  final String content;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountState(isLoading: $isLoading)';
+    return 'AccountState(isLoading: $isLoading, name: $name, content: $content)';
   }
 
   @override
@@ -107,7 +130,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
     super.debugFillProperties(properties);
     properties
       ..add(DiagnosticsProperty('type', 'AccountState'))
-      ..add(DiagnosticsProperty('isLoading', isLoading));
+      ..add(DiagnosticsProperty('isLoading', isLoading))
+      ..add(DiagnosticsProperty('name', name))
+      ..add(DiagnosticsProperty('content', content));
   }
 
   @override
@@ -116,12 +141,19 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
         (other is _AccountState &&
             (identical(other.isLoading, isLoading) ||
                 const DeepCollectionEquality()
-                    .equals(other.isLoading, isLoading)));
+                    .equals(other.isLoading, isLoading)) &&
+            (identical(other.name, name) ||
+                const DeepCollectionEquality().equals(other.name, name)) &&
+            (identical(other.content, content) ||
+                const DeepCollectionEquality().equals(other.content, content)));
   }
 
   @override
   int get hashCode =>
-      runtimeType.hashCode ^ const DeepCollectionEquality().hash(isLoading);
+      runtimeType.hashCode ^
+      const DeepCollectionEquality().hash(isLoading) ^
+      const DeepCollectionEquality().hash(name) ^
+      const DeepCollectionEquality().hash(content);
 
   @JsonKey(ignore: true)
   @override
@@ -130,10 +162,15 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
 }
 
 abstract class _AccountState implements AccountState {
-  const factory _AccountState({bool isLoading}) = _$_AccountState;
+  const factory _AccountState({bool isLoading, String name, String content}) =
+      _$_AccountState;
 
   @override
   bool get isLoading;
+  @override
+  String get name;
+  @override
+  String get content;
   @override
   @JsonKey(ignore: true)
   _$AccountStateCopyWith<_AccountState> get copyWith;

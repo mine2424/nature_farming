@@ -7,5 +7,7 @@ part 'account_state.freezed.dart';
 abstract class AccountState with _$AccountState {
   const factory AccountState({
     @Default(false) bool isLoading,
+    @Default('') String name,
+    @Default('') String content,
   }) = _AccountState;
 }

@@ -1,25 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/use_case/account/account_notifier.dart';
+import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/home/home_page.dart';
 import 'package:nature_farming/views/widget/sizedBox/sizedBox.dart';
+import 'package:provider/provider.dart';
 
-class OnBoardPage extends StatefulWidget {
-  @override
-  _OnBoardPageState createState() => _OnBoardPageState();
-}
+// class OnBoardPage extends StatefulWidget {
+//   @override
+//   _OnBoardPageState createState() => _OnBoardPageState.wrapped();
+// }
+//
+// class _OnBoardPageState extends State<OnBoardPage> {
+final introKey = GlobalKey<IntroductionScreenState>();
 
-class _OnBoardPageState extends State<OnBoardPage> {
-  final introKey = GlobalKey<IntroductionScreenState>();
+class OnBoardPage extends StatelessWidget {
+  const OnBoardPage._({Key key}) : super(key: key);
 
-  @override
-  void dispose() {
-    print('dispose onBoard');
-    super.dispose();
+  static Widget wrapped() {
+    return MultiProvider(
+      providers: [
+        StateNotifierProvider<AccountNotifier, AccountState>(
+          create: (context) => AccountNotifier(
+            context: context,
+          ),
+        ),
+      ],
+      child: const OnBoardPage._(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
+    final notifier = context.watch<AccountNotifier>();
     const bodyStyle = TextStyle(fontSize: 19.0);
     const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
@@ -53,13 +68,15 @@ class _OnBoardPageState extends State<OnBoardPage> {
             children: [
               TextFormField(
                 decoration: const InputDecoration(
-                  labelText: 'ユーザー名',
-                  labelStyle: TextStyle(color: Colors.grey),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: AppColor.mainColor),
-                  ),
-                ),
+                    labelText: 'ユーザー名',
+                    labelStyle: TextStyle(color: Colors.grey),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide: BorderSide(color: AppColor.mainColor),
+                    )),
                 maxLength: 20,
+                onSaved: (value) {
+                  notifier.saveName(value);
+                },
               ),
               TextFormField(
                 decoration: const InputDecoration(
@@ -67,6 +84,9 @@ class _OnBoardPageState extends State<OnBoardPage> {
                     labelStyle: TextStyle(color: Colors.grey),
                     focusedBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: AppColor.mainColor))),
+                onSaved: (value) {
+                  notifier.saveContent(value);
+                },
               ),
             ],
           )),
@@ -107,20 +127,17 @@ class _OnBoardPageState extends State<OnBoardPage> {
         ),
       ],
       onDone: () {
-        _showMainPage();
+        notifier.createUser();
+        Navigator.of(context, rootNavigator: true)
+            .pushReplacement<MaterialPageRoute, void>(
+          MaterialPageRoute(
+            builder: (_) => HomePage(),
+          ),
+        );
       },
       skip: const Text('Skip'),
       next: const Icon(Icons.arrow_forward),
       done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
-    );
-  }
-
-  void _showMainPage() {
-    Navigator.of(context, rootNavigator: true)
-        .pushReplacement<MaterialPageRoute, void>(
-      MaterialPageRoute(
-        builder: (_) => HomePage(),
-      ),
     );
   }
 
