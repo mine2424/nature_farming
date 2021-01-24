@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/views/timeline/timeline.dart';
+import 'package:nature_farming/views/widget/drawer/drawer.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatelessWidget {
@@ -41,8 +42,7 @@ class HomePage extends StatelessWidget {
               ],
             ),
           ),
-          // TODO(mine2424): create Drawer.
-          // drawer: ,
+          drawer: drawer(context),
           body: TabBarView(
             children: [
               TimeLinePage(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nature_farming/common/color/color.dart';
 
 void replyMessage(BuildContext context, GlobalKey<FormState> formKey) {
   showModalBottomSheet<void>(
@@ -25,7 +26,7 @@ void replyMessage(BuildContext context, GlobalKey<FormState> formKey) {
                   suffixIcon: IconButton(
                     icon: const Icon(
                       Icons.image,
-                      color: Color(0xFFAACF52),
+                      color: AppColor.mainColor,
                     ),
                     onPressed: () {},
                   ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/views/timeline/post_item/post_item.dart';
+import 'package:nature_farming/views/widget/dialog/reply_dialog.dart';
 
 Widget listItem(BuildContext context, int index) {
   return GestureDetector(
@@ -28,7 +29,7 @@ Widget listItem(BuildContext context, int index) {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const SizedBox(height: 8),
+              const SizedBox(height: 16),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,

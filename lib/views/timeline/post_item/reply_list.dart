@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:nature_farming/views/widget/dialog/reply_dialog.dart';
 
-Widget replyList() {
+Widget replyList(GlobalKey<FormState> formKey) {
   return ListView.separated(
     shrinkWrap: true,
     physics: const NeverScrollableScrollPhysics(),
@@ -27,7 +28,9 @@ Widget replyList() {
                       alignment: Alignment.centerLeft,
                       child: IconButton(
                         icon: Icon(Icons.reply_outlined),
-                        onPressed: () {},
+                        onPressed: () {
+                          replyMessage(context, formKey);
+                        },
                       ),
                     ),
                   ),

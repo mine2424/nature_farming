@@ -104,7 +104,7 @@ class PostItemPage extends StatelessWidget {
               ),
             ),
             const Divider(),
-            replyList(),
+            replyList(_formKey),
           ],
         ),
       ),
