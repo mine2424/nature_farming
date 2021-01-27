@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flamingo/flamingo.dart';
 import 'package:flutter/material.dart';
+import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/onboard/onBoard_page.dart';
 import 'package:provider/provider.dart';
 import 'package:nature_farming/views/home/home_page.dart';
 import 'package:nature_farming/use_case/account/account_notifier.dart';
 
+import 'common/type/types.dart';
 import 'di_container.dart';
 
 class App extends StatelessWidget {
@@ -48,7 +51,7 @@ class _RootPageState extends State<RootPage> {
     super.dispose();
   }
 
-  void _pushNotificationConfigure() {
+  Future<void> _pushNotificationConfigure() async {
     FirebaseMessaging()
       ..requestNotificationPermissions()
       ..onIosSettingsRegistered.listen(
@@ -85,7 +88,9 @@ class _RootPageState extends State<RootPage> {
           print('onLaunch: $message');
         },
       );
-
+    final notifier = context.read<AccountNotifier>();
+    final token = FirebaseMessaging().getToken();
+    notifier.saveMessagingToken(token.toString());
     // ignore: cascade_invocations
     // _firebaseMessaging.subscribeToTopic('all');
   }
@@ -94,11 +99,14 @@ class _RootPageState extends State<RootPage> {
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final accountNotifier = context.read<AccountNotifier>();
-    final loginResult = accountNotifier.startUp();
+    //awaitをつけないとFutureが付きっぱなしになる。
+    final loginResult = await accountNotifier.startUp();
     // ignore: unrelated_type_equality_checks
-    if (loginResult == true) {
+    if (loginResult == StartUpType.loggedInUser) {
+      print('true');
       _showMainPage();
     } else {
+      print('fuck false');
       _showLoginPage();
     }
   }

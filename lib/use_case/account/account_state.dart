@@ -9,5 +9,6 @@ abstract class AccountState with _$AccountState {
     @Default(false) bool isLoading,
     @Default('') String name,
     @Default('') String content,
+    @Default('') String token,
   }) = _AccountState;
 }

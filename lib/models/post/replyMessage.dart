@@ -1,10 +1,10 @@
 import 'package:flamingo/flamingo.dart';
 import 'package:flamingo_annotation/flamingo_annotation.dart';
 
-part 'user.flamingo.dart';
+part 'replyMessage.flamingo.dart';
 
-class User extends Document<User> {
-  User({
+class ReplyMessage extends Document<ReplyMessage> {
+  ReplyMessage({
     String id,
     DocumentSnapshot snapshot,
     Map<String, dynamic> values,
@@ -20,11 +20,14 @@ class User extends Document<User> {
   String content;
 
   @Field()
-  String fmcToken;
+  int good;
+
+  @Field()
+  Future<String> fmcToken;
 
   /// プロフィール写真
   @StorageField()
-  StorageFile image;
+  StorageFile postImage;
 
   @override
   Map<String, dynamic> toData() => _$toData(this);

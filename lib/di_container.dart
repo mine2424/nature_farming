@@ -7,7 +7,7 @@ import 'use_case/account/account_state.dart';
 List<SingleChildWidget> get useCaseProviders {
   return <SingleChildWidget>[
     StateNotifierProvider<AccountNotifier, AccountState>(
-      create: (context) => AccountNotifier(context: context),
+      create: (context) => AccountNotifier(),
     ),
   ];
 }

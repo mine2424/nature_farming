@@ -3,59 +3,63 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flamingo/flamingo.dart';
 import 'package:flutter/material.dart';
-import 'package:nature_farming/repository/auth_repository.dart';
+import 'package:nature_farming/common/type/types.dart';
+import 'package:nature_farming/repository/index.dart';
 import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 import '../../models/user/index.dart' as user;
 
 class AccountNotifier extends StateNotifier<AccountState> with LocatorMixin {
-  AccountNotifier({@required this.context})
+  AccountNotifier({GlobalKey<FormState> formkey})
       : super(const AccountState(isLoading: false));
 
-  final BuildContext context;
-  // AuthRepository _authRepository;
+  final formkey = GlobalKey<FormState>();
 
-  FirebaseMessaging _firebaseMessaging;
+  FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
+  // AuthDataSource _authDataSource;
   AuthRepository get _authRepository => read<AuthRepository>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _finishLoading() {
     state = state.copyWith(isLoading: false);
   }
 
-  Future<bool> startUp() async {
+  void saveMessagingToken(String token) => state = state.copyWith(token: token);
+
+  Future<StartUpType> startUp() async {
     final currentUser = FirebaseAuth.instance.currentUser;
+    print('this acount is $currentUser');
     if (currentUser != null) {
       print('logged in !');
-      return true;
+      return StartUpType.loggedInUser;
+    } else {
+      return StartUpType.incompleteUser;
     }
-    return false;
   }
 
-  Future<String> loggedInUserId() async {
-    final userId = _authRepository.loggedInUserId();
+  String loggedInUserUid() {
+    final userId = loggedInUserId();
     return userId;
   }
 
   Future<void> logout() async {
-    return _authRepository.signOut();
+    return signOut();
   }
 
   void saveContent(String value) => state = state.copyWith(content: value);
-  void saveName(String value) => state = state.copyWith(name: value);
+  void saveName(String value) {
+    state = state.copyWith(name: value);
+    print('this name is ${state.name}');
+  }
 
   Future<void> createUser() async {
-    await _authRepository.signInWithAnonymously();
-    final userId = _authRepository.loggedInUserId();
+    await signInWithAnonymously();
+    final userId = loggedInUserUid();
+    print('IN createUser id is $userId');
     final batch = Batch();
     final userData = user.User(id: userId)
       ..name = state.name
       ..content = state.content
-      ..fmcToken = _firebaseMessaging.getToken();
+      ..fmcToken = state.token;
 
     batch.save(userData);
     await batch.commit();

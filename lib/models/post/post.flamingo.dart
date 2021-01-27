@@ -1,34 +1,40 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'user.dart';
+part of 'post.dart';
 
 // **************************************************************************
 // FieldValueGenerator
 // **************************************************************************
 
 /// Field value key
-enum UserKey {
+enum PostKey {
   name,
   userId,
   content,
+  good,
   fmcToken,
 
-  image,
+  postImage,
+  replyMessage,
 }
 
-extension UserKeyExtension on UserKey {
+extension PostKeyExtension on PostKey {
   String get value {
     switch (this) {
-      case UserKey.name:
+      case PostKey.name:
         return 'name';
-      case UserKey.userId:
+      case PostKey.userId:
         return 'userId';
-      case UserKey.content:
+      case PostKey.content:
         return 'content';
-      case UserKey.fmcToken:
+      case PostKey.good:
+        return 'good';
+      case PostKey.fmcToken:
         return 'fmcToken';
-      case UserKey.image:
-        return 'image';
+      case PostKey.postImage:
+        return 'postImage';
+      case PostKey.replyMessage:
+        return 'replyMessage';
       default:
         return null;
     }
@@ -36,24 +42,26 @@ extension UserKeyExtension on UserKey {
 }
 
 /// For save data
-Map<String, dynamic> _$toData(User doc) {
+Map<String, dynamic> _$toData(Post doc) {
   final data = <String, dynamic>{};
   Helper.writeNotNull(data, 'name', doc.name);
   Helper.writeNotNull(data, 'userId', doc.userId);
   Helper.writeNotNull(data, 'content', doc.content);
+  Helper.writeNotNull(data, 'good', doc.good);
   Helper.writeNotNull(data, 'fmcToken', doc.fmcToken);
 
-  Helper.writeStorageNotNull(data, 'image', doc.image, isSetNull: true);
+  Helper.writeStorageNotNull(data, 'postImage', doc.postImage, isSetNull: true);
 
   return data;
 }
 
 /// For load data
-void _$fromData(User doc, Map<String, dynamic> data) {
+void _$fromData(Post doc, Map<String, dynamic> data) {
   doc.name = Helper.valueFromKey<String>(data, 'name');
   doc.userId = Helper.valueFromKey<String>(data, 'userId');
   doc.content = Helper.valueFromKey<String>(data, 'content');
-  doc.fmcToken = Helper.valueFromKey<String>(data, 'fmcToken');
+  doc.good = Helper.valueFromKey<int>(data, 'good');
+  doc.fmcToken = Helper.valueFromKey<Future<String>>(data, 'fmcToken');
 
-  doc.image = Helper.storageFile(data, 'image');
+  doc.postImage = Helper.storageFile(data, 'postImage');
 }

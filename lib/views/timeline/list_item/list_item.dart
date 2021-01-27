@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/views/timeline/post_item/post_item.dart';
-import 'package:nature_farming/views/widget/dialog/reply_dialog.dart';
 
-Widget listItem(BuildContext context, int index) {
+Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
   return GestureDetector(
     onTap: () {
       Navigator.push(
         context,
         MaterialPageRoute<void>(
-          builder: (BuildContext context) => PostItemPage(),
+          builder: (BuildContext context) => PostItemPage.wrapped(index),
         ),
       );
     },
     child: Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(16),

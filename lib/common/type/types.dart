@@ -1,0 +1,1 @@
+enum StartUpType { loggedInUser, incompleteUser }

@@ -45,7 +45,7 @@ class HomePage extends StatelessWidget {
           drawer: drawer(context),
           body: TabBarView(
             children: [
-              TimeLinePage(),
+              TimeLinePage.wrapped(),
               Container(),
               Container(),
             ],

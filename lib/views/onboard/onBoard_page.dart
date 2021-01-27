@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/common/type/types.dart';
 import 'package:nature_farming/use_case/account/account_notifier.dart';
 import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/home/home_page.dart';
@@ -23,9 +24,7 @@ class OnBoardPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         StateNotifierProvider<AccountNotifier, AccountState>(
-          create: (context) => AccountNotifier(
-            context: context,
-          ),
+          create: (context) => AccountNotifier(),
         ),
       ],
       child: const OnBoardPage._(),
@@ -64,32 +63,33 @@ class OnBoardPage extends StatelessWidget {
         PageViewModel(
           title: 'ユーザー登録しましょう',
           bodyWidget: Form(
+              key: notifier.formkey,
               child: Column(
-            children: [
-              TextFormField(
-                decoration: const InputDecoration(
-                    labelText: 'ユーザー名',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    focusedBorder: UnderlineInputBorder(
-                      borderSide: BorderSide(color: AppColor.mainColor),
-                    )),
-                maxLength: 20,
-                onSaved: (value) {
-                  notifier.saveName(value);
-                },
-              ),
-              TextFormField(
-                decoration: const InputDecoration(
-                    labelText: '自己紹介文',
-                    labelStyle: TextStyle(color: Colors.grey),
-                    focusedBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: AppColor.mainColor))),
-                onSaved: (value) {
-                  notifier.saveContent(value);
-                },
-              ),
-            ],
-          )),
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                        labelText: 'ユーザー名',
+                        labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColor.mainColor),
+                        )),
+                    maxLength: 20,
+                    onChanged: (value) {
+                      notifier.saveName(value);
+                    },
+                  ),
+                  TextField(
+                    decoration: const InputDecoration(
+                        labelText: '自己紹介文',
+                        labelStyle: TextStyle(color: Colors.grey),
+                        focusedBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColor.mainColor))),
+                    onChanged: (value) {
+                      notifier.saveContent(value);
+                    },
+                  ),
+                ],
+              )),
           image: _buildImage(),
           decoration: pageDecoration,
         ),
@@ -126,14 +126,21 @@ class OnBoardPage extends StatelessWidget {
           decoration: pageDecoration,
         ),
       ],
-      onDone: () {
-        notifier.createUser();
-        Navigator.of(context, rootNavigator: true)
-            .pushReplacement<MaterialPageRoute, void>(
-          MaterialPageRoute(
-            builder: (_) => HomePage(),
-          ),
-        );
+      onDone: () async {
+        if (notifier.formkey.currentState.validate()) {
+          notifier.formkey.currentState.save();
+
+          final startUp = await notifier.startUp();
+          if (startUp == StartUpType.incompleteUser) {
+            return notifier.createUser();
+          }
+          await Navigator.of(context, rootNavigator: true)
+              .pushReplacement<MaterialPageRoute, void>(
+            MaterialPageRoute(
+              builder: (_) => HomePage(),
+            ),
+          );
+        }
       },
       skip: const Text('Skip'),
       next: const Icon(Icons.arrow_forward),

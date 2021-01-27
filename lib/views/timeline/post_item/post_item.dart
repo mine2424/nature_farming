@@ -1,15 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_state_notifier/flutter_state_notifier.dart';
+import 'package:nature_farming/use_case/sns/sns_notifier.dart';
+import 'package:nature_farming/use_case/sns/sns_state.dart';
 import 'package:nature_farming/views/timeline/post_item/reply_list.dart';
 import 'package:nature_farming/views/widget/appBar/appBar.dart';
 import 'package:nature_farming/views/widget/dialog/reply_dialog.dart';
+import 'package:provider/provider.dart';
 
 class PostItemPage extends StatelessWidget {
-  PostItemPage({Key key}) : super(key: key);
+  const PostItemPage._({Key key}) : super(key: key);
 
-  final _formKey = GlobalKey<FormState>();
+  static Widget wrapped(int index) {
+    return MultiProvider(
+      providers: [
+        StateNotifierProvider<SnsNotifier, SnsState>(
+          create: (context) => SnsNotifier(),
+        ),
+      ],
+      child: const PostItemPage._(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
+    final _formKey = GlobalKey<FormState>();
+
     return Scaffold(
       appBar: appBar(context, '投稿内容', false),
       body: SingleChildScrollView(
