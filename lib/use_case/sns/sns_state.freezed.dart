@@ -19,15 +19,15 @@ class _$SnsStateTearOff {
       String name = '',
       String content = '',
       String fmcToken = '',
-      String postImage = '',
-      File image}) {
+      File image,
+      List<Post> postItems}) {
     return _SnsState(
       isLoading: isLoading,
       name: name,
       content: content,
       fmcToken: fmcToken,
-      postImage: postImage,
       image: image,
+      postItems: postItems,
     );
   }
 }
@@ -42,8 +42,8 @@ mixin _$SnsState {
   String get name;
   String get content;
   String get fmcToken;
-  String get postImage;
   File get image;
+  List<Post> get postItems;
 
   @JsonKey(ignore: true)
   $SnsStateCopyWith<SnsState> get copyWith;
@@ -58,8 +58,8 @@ abstract class $SnsStateCopyWith<$Res> {
       String name,
       String content,
       String fmcToken,
-      String postImage,
-      File image});
+      File image,
+      List<Post> postItems});
 }
 
 /// @nodoc
@@ -76,16 +76,17 @@ class _$SnsStateCopyWithImpl<$Res> implements $SnsStateCopyWith<$Res> {
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
-    Object postImage = freezed,
     Object image = freezed,
+    Object postItems = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
-      postImage: postImage == freezed ? _value.postImage : postImage as String,
       image: image == freezed ? _value.image : image as File,
+      postItems:
+          postItems == freezed ? _value.postItems : postItems as List<Post>,
     ));
   }
 }
@@ -100,8 +101,8 @@ abstract class _$SnsStateCopyWith<$Res> implements $SnsStateCopyWith<$Res> {
       String name,
       String content,
       String fmcToken,
-      String postImage,
-      File image});
+      File image,
+      List<Post> postItems});
 }
 
 /// @nodoc
@@ -119,16 +120,17 @@ class __$SnsStateCopyWithImpl<$Res> extends _$SnsStateCopyWithImpl<$Res>
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
-    Object postImage = freezed,
     Object image = freezed,
+    Object postItems = freezed,
   }) {
     return _then(_SnsState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
-      postImage: postImage == freezed ? _value.postImage : postImage as String,
       image: image == freezed ? _value.image : image as File,
+      postItems:
+          postItems == freezed ? _value.postItems : postItems as List<Post>,
     ));
   }
 }
@@ -140,13 +142,12 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       this.name = '',
       this.content = '',
       this.fmcToken = '',
-      this.postImage = '',
-      this.image})
+      this.image,
+      this.postItems})
       : assert(isLoading != null),
         assert(name != null),
         assert(content != null),
-        assert(fmcToken != null),
-        assert(postImage != null);
+        assert(fmcToken != null);
 
   @JsonKey(defaultValue: false)
   @override
@@ -160,15 +161,14 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   @JsonKey(defaultValue: '')
   @override
   final String fmcToken;
-  @JsonKey(defaultValue: '')
-  @override
-  final String postImage;
   @override
   final File image;
+  @override
+  final List<Post> postItems;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnsState(isLoading: $isLoading, name: $name, content: $content, fmcToken: $fmcToken, postImage: $postImage, image: $image)';
+    return 'SnsState(isLoading: $isLoading, name: $name, content: $content, fmcToken: $fmcToken, image: $image, postItems: $postItems)';
   }
 
   @override
@@ -180,8 +180,8 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('fmcToken', fmcToken))
-      ..add(DiagnosticsProperty('postImage', postImage))
-      ..add(DiagnosticsProperty('image', image));
+      ..add(DiagnosticsProperty('image', image))
+      ..add(DiagnosticsProperty('postItems', postItems));
   }
 
   @override
@@ -199,11 +199,11 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
             (identical(other.fmcToken, fmcToken) ||
                 const DeepCollectionEquality()
                     .equals(other.fmcToken, fmcToken)) &&
-            (identical(other.postImage, postImage) ||
-                const DeepCollectionEquality()
-                    .equals(other.postImage, postImage)) &&
             (identical(other.image, image) ||
-                const DeepCollectionEquality().equals(other.image, image)));
+                const DeepCollectionEquality().equals(other.image, image)) &&
+            (identical(other.postItems, postItems) ||
+                const DeepCollectionEquality()
+                    .equals(other.postItems, postItems)));
   }
 
   @override
@@ -213,8 +213,8 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(fmcToken) ^
-      const DeepCollectionEquality().hash(postImage) ^
-      const DeepCollectionEquality().hash(image);
+      const DeepCollectionEquality().hash(image) ^
+      const DeepCollectionEquality().hash(postItems);
 
   @JsonKey(ignore: true)
   @override
@@ -228,8 +228,8 @@ abstract class _SnsState implements SnsState {
       String name,
       String content,
       String fmcToken,
-      String postImage,
-      File image}) = _$_SnsState;
+      File image,
+      List<Post> postItems}) = _$_SnsState;
 
   @override
   bool get isLoading;
@@ -240,9 +240,9 @@ abstract class _SnsState implements SnsState {
   @override
   String get fmcToken;
   @override
-  String get postImage;
-  @override
   File get image;
+  @override
+  List<Post> get postItems;
   @override
   @JsonKey(ignore: true)
   _$SnsStateCopyWith<_SnsState> get copyWith;

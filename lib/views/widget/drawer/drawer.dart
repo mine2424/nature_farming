@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/views/profile/edit_profile.dart';
 
 Drawer drawer(BuildContext context) {
   return Drawer(
@@ -18,7 +19,12 @@ Drawer drawer(BuildContext context) {
         ),
         ListTile(
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(
+              context,
+              MaterialPageRoute<void>(
+                builder: (BuildContext context) => EditProfilePage.wrapped(),
+              ),
+            );
           },
           title: const Text('アカウント編集'),
           trailing: const Icon(Icons.keyboard_arrow_right),

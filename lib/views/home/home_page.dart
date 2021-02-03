@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:nature_farming/views/timeline/timeline.dart';
+import 'package:nature_farming/views/timeline/timeline/timeline.dart';
 import 'package:nature_farming/views/widget/drawer/drawer.dart';
 import 'package:provider/provider.dart';
 

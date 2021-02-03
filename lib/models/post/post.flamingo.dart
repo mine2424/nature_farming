@@ -15,6 +15,7 @@ enum PostKey {
   fmcToken,
 
   postImage,
+  imageDate,
   replyMessage,
 }
 
@@ -33,6 +34,8 @@ extension PostKeyExtension on PostKey {
         return 'fmcToken';
       case PostKey.postImage:
         return 'postImage';
+      case PostKey.imageDate:
+        return 'imageDate';
       case PostKey.replyMessage:
         return 'replyMessage';
       default:
@@ -51,6 +54,7 @@ Map<String, dynamic> _$toData(Post doc) {
   Helper.writeNotNull(data, 'fmcToken', doc.fmcToken);
 
   Helper.writeStorageNotNull(data, 'postImage', doc.postImage, isSetNull: true);
+  Helper.writeStorageNotNull(data, 'imageDate', doc.imageDate, isSetNull: true);
 
   return data;
 }
@@ -64,4 +68,5 @@ void _$fromData(Post doc, Map<String, dynamic> data) {
   doc.fmcToken = Helper.valueFromKey<Future<String>>(data, 'fmcToken');
 
   doc.postImage = Helper.storageFile(data, 'postImage');
+  doc.imageDate = Helper.storageFile(data, 'imageDate');
 }

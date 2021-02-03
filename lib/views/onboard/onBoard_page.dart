@@ -6,15 +6,8 @@ import 'package:nature_farming/common/type/types.dart';
 import 'package:nature_farming/use_case/account/account_notifier.dart';
 import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/home/home_page.dart';
-import 'package:nature_farming/views/widget/sizedBox/sizedBox.dart';
 import 'package:provider/provider.dart';
 
-// class OnBoardPage extends StatefulWidget {
-//   @override
-//   _OnBoardPageState createState() => _OnBoardPageState.wrapped();
-// }
-//
-// class _OnBoardPageState extends State<OnBoardPage> {
 final introKey = GlobalKey<IntroductionScreenState>();
 
 class OnBoardPage extends StatelessWidget {

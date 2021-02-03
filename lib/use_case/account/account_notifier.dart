@@ -19,6 +19,13 @@ class AccountNotifier extends StateNotifier<AccountState> with LocatorMixin {
   // AuthDataSource _authDataSource;
   AuthRepository get _authRepository => read<AuthRepository>();
 
+  final batch = Batch();
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _finishLoading() {
     state = state.copyWith(isLoading: false);
   }
@@ -55,13 +62,21 @@ class AccountNotifier extends StateNotifier<AccountState> with LocatorMixin {
     await signInWithAnonymously();
     final userId = loggedInUserUid();
     print('IN createUser id is $userId');
-    final batch = Batch();
     final userData = user.User(id: userId)
       ..name = state.name
       ..content = state.content
       ..fmcToken = state.token;
 
     batch.save(userData);
+    await batch.commit();
+  }
+
+  Future<void> updateUser() async {
+    final userData = user.User(id: loggedInUserUid())
+      ..name = state.name
+      ..content = state.content;
+
+    batch.update(userData);
     await batch.commit();
   }
 }

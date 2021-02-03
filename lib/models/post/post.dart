@@ -25,12 +25,17 @@ class Post extends Document<Post> {
   @Field()
   int good;
 
+  /// fmc tokenのキー
   @Field()
   Future<String> fmcToken;
 
   /// プロフィール写真
   @StorageField()
   StorageFile postImage;
+
+  /// プロフィール写真のデータ
+  @StorageField()
+  StorageFile imageDate;
 
   /// 返信のメッセージ
   @SubCollection()

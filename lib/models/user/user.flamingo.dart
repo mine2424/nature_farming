@@ -13,7 +13,7 @@ enum UserKey {
   content,
   fmcToken,
 
-  image,
+  userImage,
 }
 
 extension UserKeyExtension on UserKey {
@@ -27,8 +27,8 @@ extension UserKeyExtension on UserKey {
         return 'content';
       case UserKey.fmcToken:
         return 'fmcToken';
-      case UserKey.image:
-        return 'image';
+      case UserKey.userImage:
+        return 'userImage';
       default:
         return null;
     }
@@ -43,7 +43,7 @@ Map<String, dynamic> _$toData(User doc) {
   Helper.writeNotNull(data, 'content', doc.content);
   Helper.writeNotNull(data, 'fmcToken', doc.fmcToken);
 
-  Helper.writeStorageNotNull(data, 'image', doc.image, isSetNull: true);
+  Helper.writeStorageNotNull(data, 'userImage', doc.userImage, isSetNull: true);
 
   return data;
 }
@@ -55,5 +55,5 @@ void _$fromData(User doc, Map<String, dynamic> data) {
   doc.content = Helper.valueFromKey<String>(data, 'content');
   doc.fmcToken = Helper.valueFromKey<String>(data, 'fmcToken');
 
-  doc.image = Helper.storageFile(data, 'image');
+  doc.userImage = Helper.storageFile(data, 'userImage');
 }

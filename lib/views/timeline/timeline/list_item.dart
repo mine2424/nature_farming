@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:nature_farming/models/post/post.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
-import 'package:nature_farming/views/timeline/post_item/post_item.dart';
+import 'package:nature_farming/views/timeline/detail_item/post_item.dart';
 
-Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
+Widget listItem({
+  BuildContext context,
+  int index,
+  SnsNotifier notifier,
+  Post postItem,
+}) {
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute<void>(
-          builder: (BuildContext context) => PostItemPage.wrapped(index),
-        ),
+      notifier.pushWithReload(
+        context: context,
+        page: PostItemPage.wrapped(index),
       );
     },
     child: Row(
@@ -23,6 +27,7 @@ Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
             child: Image.network(
               'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png',
               width: 60,
+              fit: BoxFit.cover,
             ),
           ),
         ),
@@ -37,28 +42,25 @@ Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'flutter team',
-                    style: TextStyle(fontWeight: FontWeight.bold),
+                    postItem.name.toString(),
+                    style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 8),
-                    child: Text('@Hello world'),
-                  )
                 ],
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8, right: 8),
-                child: Text(
-                    '古代穀物である「スペルト小麦」を使ったパン屋さんを発見！環欒舎というお店で、自然農で小麦を栽培して、パン作りをされているそうです🌾卸しですが、店頭で取り扱うパン屋は滅多にありません'),
+                child: Text(postItem.content),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8, right: 8),
                 child: ClipRRect(
                   borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  child: Image.network(
-                    'https://pbs.twimg.com/media/ErdYFPyUUAQNWxc?format=jpg&name=large',
-                    height: 200,
-                  ),
+                  child: (postItem.postImage == null)
+                      ? const SizedBox()
+                      : Image.network(
+                          postItem.postImage.url,
+                          height: 200,
+                        ),
                 ),
               ),
               Padding(
@@ -70,7 +72,15 @@ Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
                         alignment: Alignment.centerLeft,
                         child: IconButton(
                           icon: Icon(Icons.reply_outlined),
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (BuildContext context) =>
+                                    PostItemPage.wrapped(index),
+                              ),
+                            );
+                          },
                         ),
                       ),
                     ),
@@ -87,7 +97,7 @@ Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8),
-                            child: Text('23'),
+                            child: Text(postItem.good.toString()),
                           ),
                         ],
                       ),
@@ -97,7 +107,9 @@ Widget listItem(BuildContext context, int index, SnsNotifier notifier) {
                         alignment: Alignment.centerLeft,
                         child: IconButton(
                           icon: Icon(Icons.share_sharp),
-                          onPressed: () {},
+                          onPressed: () {
+                            notifier.deletePost(postItem.id);
+                          },
                         ),
                       ),
                     ),

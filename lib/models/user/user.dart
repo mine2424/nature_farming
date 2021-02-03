@@ -24,7 +24,7 @@ class User extends Document<User> {
 
   /// プロフィール写真
   @StorageField()
-  StorageFile image;
+  StorageFile userImage;
 
   @override
   Map<String, dynamic> toData() => _$toData(this);
