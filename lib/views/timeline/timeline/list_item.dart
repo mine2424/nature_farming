@@ -13,7 +13,7 @@ Widget listItem({
     onTap: () {
       notifier.pushWithReload(
         context: context,
-        page: PostItemPage.wrapped(index),
+        page: PostItemPage.wrapped(index, postItem),
       );
     },
     child: Row(
@@ -77,7 +77,7 @@ Widget listItem({
                               context,
                               MaterialPageRoute<void>(
                                 builder: (BuildContext context) =>
-                                    PostItemPage.wrapped(index),
+                                    PostItemPage.wrapped(index, postItem),
                               ),
                             );
                           },

@@ -3,6 +3,7 @@ import 'package:flamingo/flamingo.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:nature_farming/models/post/post.dart';
+import 'package:nature_farming/models/post/replyMessage.dart';
 import 'package:nature_farming/models/user/index.dart';
 import 'package:nature_farming/models/user/user.dart' as users;
 import 'package:nature_farming/repository/index.dart';
@@ -10,7 +11,8 @@ import 'package:nature_farming/use_case/sns/sns_state.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
-  SnsNotifier() : super(const SnsState(isLoading: false));
+  SnsNotifier({@required this.isFetchReplyMessage, this.postDocId})
+      : super(const SnsState(isLoading: false));
 
   DocumentAccessor documentAccessor = DocumentAccessor();
   CollectionPagingListener<Post> collectionPagingListener;
@@ -18,11 +20,16 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
   final user = users.User(id: loggedInUserId());
   final batch = Batch();
   final storage = Storage();
+  final bool isFetchReplyMessage;
+  final String postDocId;
 
   @override
   void initState() {
     super.initState();
     fetch();
+    if (isFetchReplyMessage) {
+      fetchReplyMessage(postDocId);
+    }
   }
 
   @override
@@ -65,6 +72,17 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
     });
   }
 
+  Future<void> fetchReplyMessage(String postDocId) async {
+    // final replyMessages = snapshot.docs.map((e) => )
+    final postDoc = Post(id: postDocId);
+    final replyPath = Document.path<ReplyMessage>(
+        collectionPath: postDoc.replyMessage.ref.path);
+    final snapshot = await firestoreInstance.collection(replyPath).get();
+    final list =
+        snapshot.docs.map((item) => ReplyMessage(snapshot: item)).toList();
+    state = state.copyWith(replyMessages: list);
+  }
+
   Future<void> addPost() async {
     final userInfo = await documentAccessor.load<User>(user);
     final doc = Post()
@@ -73,13 +91,25 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
       ..good = 0
       ..userId = userInfo.userId;
     if (state.image != null) {
-      await storage.saveWithDoc(
-        doc.reference,
-        'postImage',
-        state.image,
-      );
+      await storage.saveWithDoc(doc.reference, 'postImage', state.image);
     }
     batch.save(doc);
+    await batch.commit();
+  }
+
+  Future<void> addReply(String docId) async {
+    final userInfo = await documentAccessor.load<User>(user);
+    final postDoc = Post(id: docId);
+    final replyDoc = ReplyMessage(collectionRef: postDoc.replyMessage.ref)
+      ..name = userInfo.name
+      ..content = state.content
+      ..good = state.good
+      ..userId = userInfo.userId
+      ..fmcToken = userInfo.fmcToken;
+    if (state.image != null) {
+      await storage.saveWithDoc(replyDoc.reference, 'postImage', state.image);
+    }
+    batch.save(replyDoc);
     await batch.commit();
   }
 
@@ -88,5 +118,12 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
     await documentAccessor.delete(doc);
   }
 
-  Future<void> replyComment() {}
+  Future<void> deleteReplyMessage({String postDocId, String replyDocId}) async {
+    final postDoc = Post(id: postDocId);
+    final replyDoc = ReplyMessage(
+      id: replyDocId,
+      collectionRef: postDoc.replyMessage.ref,
+    );
+    await documentAccessor.delete(replyDoc);
+  }
 }

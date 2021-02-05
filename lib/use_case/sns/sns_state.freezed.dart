@@ -19,15 +19,19 @@ class _$SnsStateTearOff {
       String name = '',
       String content = '',
       String fmcToken = '',
+      int good = 0,
       File image,
-      List<Post> postItems}) {
+      List<Post> postItems,
+      List<ReplyMessage> replyMessages}) {
     return _SnsState(
       isLoading: isLoading,
       name: name,
       content: content,
       fmcToken: fmcToken,
+      good: good,
       image: image,
       postItems: postItems,
+      replyMessages: replyMessages,
     );
   }
 }
@@ -42,8 +46,10 @@ mixin _$SnsState {
   String get name;
   String get content;
   String get fmcToken;
+  int get good;
   File get image;
   List<Post> get postItems;
+  List<ReplyMessage> get replyMessages;
 
   @JsonKey(ignore: true)
   $SnsStateCopyWith<SnsState> get copyWith;
@@ -58,8 +64,10 @@ abstract class $SnsStateCopyWith<$Res> {
       String name,
       String content,
       String fmcToken,
+      int good,
       File image,
-      List<Post> postItems});
+      List<Post> postItems,
+      List<ReplyMessage> replyMessages});
 }
 
 /// @nodoc
@@ -76,17 +84,23 @@ class _$SnsStateCopyWithImpl<$Res> implements $SnsStateCopyWith<$Res> {
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
+    Object good = freezed,
     Object image = freezed,
     Object postItems = freezed,
+    Object replyMessages = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
+      good: good == freezed ? _value.good : good as int,
       image: image == freezed ? _value.image : image as File,
       postItems:
           postItems == freezed ? _value.postItems : postItems as List<Post>,
+      replyMessages: replyMessages == freezed
+          ? _value.replyMessages
+          : replyMessages as List<ReplyMessage>,
     ));
   }
 }
@@ -101,8 +115,10 @@ abstract class _$SnsStateCopyWith<$Res> implements $SnsStateCopyWith<$Res> {
       String name,
       String content,
       String fmcToken,
+      int good,
       File image,
-      List<Post> postItems});
+      List<Post> postItems,
+      List<ReplyMessage> replyMessages});
 }
 
 /// @nodoc
@@ -120,17 +136,23 @@ class __$SnsStateCopyWithImpl<$Res> extends _$SnsStateCopyWithImpl<$Res>
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
+    Object good = freezed,
     Object image = freezed,
     Object postItems = freezed,
+    Object replyMessages = freezed,
   }) {
     return _then(_SnsState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
+      good: good == freezed ? _value.good : good as int,
       image: image == freezed ? _value.image : image as File,
       postItems:
           postItems == freezed ? _value.postItems : postItems as List<Post>,
+      replyMessages: replyMessages == freezed
+          ? _value.replyMessages
+          : replyMessages as List<ReplyMessage>,
     ));
   }
 }
@@ -142,12 +164,15 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       this.name = '',
       this.content = '',
       this.fmcToken = '',
+      this.good = 0,
       this.image,
-      this.postItems})
+      this.postItems,
+      this.replyMessages})
       : assert(isLoading != null),
         assert(name != null),
         assert(content != null),
-        assert(fmcToken != null);
+        assert(fmcToken != null),
+        assert(good != null);
 
   @JsonKey(defaultValue: false)
   @override
@@ -161,14 +186,19 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   @JsonKey(defaultValue: '')
   @override
   final String fmcToken;
+  @JsonKey(defaultValue: 0)
+  @override
+  final int good;
   @override
   final File image;
   @override
   final List<Post> postItems;
+  @override
+  final List<ReplyMessage> replyMessages;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnsState(isLoading: $isLoading, name: $name, content: $content, fmcToken: $fmcToken, image: $image, postItems: $postItems)';
+    return 'SnsState(isLoading: $isLoading, name: $name, content: $content, fmcToken: $fmcToken, good: $good, image: $image, postItems: $postItems, replyMessages: $replyMessages)';
   }
 
   @override
@@ -180,8 +210,10 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('fmcToken', fmcToken))
+      ..add(DiagnosticsProperty('good', good))
       ..add(DiagnosticsProperty('image', image))
-      ..add(DiagnosticsProperty('postItems', postItems));
+      ..add(DiagnosticsProperty('postItems', postItems))
+      ..add(DiagnosticsProperty('replyMessages', replyMessages));
   }
 
   @override
@@ -199,11 +231,16 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
             (identical(other.fmcToken, fmcToken) ||
                 const DeepCollectionEquality()
                     .equals(other.fmcToken, fmcToken)) &&
+            (identical(other.good, good) ||
+                const DeepCollectionEquality().equals(other.good, good)) &&
             (identical(other.image, image) ||
                 const DeepCollectionEquality().equals(other.image, image)) &&
             (identical(other.postItems, postItems) ||
                 const DeepCollectionEquality()
-                    .equals(other.postItems, postItems)));
+                    .equals(other.postItems, postItems)) &&
+            (identical(other.replyMessages, replyMessages) ||
+                const DeepCollectionEquality()
+                    .equals(other.replyMessages, replyMessages)));
   }
 
   @override
@@ -213,8 +250,10 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(fmcToken) ^
+      const DeepCollectionEquality().hash(good) ^
       const DeepCollectionEquality().hash(image) ^
-      const DeepCollectionEquality().hash(postItems);
+      const DeepCollectionEquality().hash(postItems) ^
+      const DeepCollectionEquality().hash(replyMessages);
 
   @JsonKey(ignore: true)
   @override
@@ -228,8 +267,10 @@ abstract class _SnsState implements SnsState {
       String name,
       String content,
       String fmcToken,
+      int good,
       File image,
-      List<Post> postItems}) = _$_SnsState;
+      List<Post> postItems,
+      List<ReplyMessage> replyMessages}) = _$_SnsState;
 
   @override
   bool get isLoading;
@@ -240,9 +281,13 @@ abstract class _SnsState implements SnsState {
   @override
   String get fmcToken;
   @override
+  int get good;
+  @override
   File get image;
   @override
   List<Post> get postItems;
+  @override
+  List<ReplyMessage> get replyMessages;
   @override
   @JsonKey(ignore: true)
   _$SnsStateCopyWith<_SnsState> get copyWith;

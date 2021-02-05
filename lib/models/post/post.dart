@@ -9,7 +9,12 @@ class Post extends Document<Post> {
     String id,
     DocumentSnapshot snapshot,
     Map<String, dynamic> values,
-  }) : super(id: id, snapshot: snapshot, values: values) {
+    CollectionReference collectionRef,
+  }) : super(
+            id: id,
+            snapshot: snapshot,
+            values: values,
+            collectionRef: collectionRef) {
     replyMessage = Collection(this, PostKey.replyMessage.value);
   }
 

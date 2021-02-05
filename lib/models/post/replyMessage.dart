@@ -8,7 +8,16 @@ class ReplyMessage extends Document<ReplyMessage> {
     String id,
     DocumentSnapshot snapshot,
     Map<String, dynamic> values,
-  }) : super(id: id, snapshot: snapshot, values: values);
+    CollectionReference collectionRef,
+  }) : super(
+            id: id,
+            snapshot: snapshot,
+            values: values,
+            collectionRef: collectionRef);
+
+  // @override
+  // CollectionReference get collectionRootReference =>
+  //     rootReference.collection('replyMessage');
 
   @Field()
   String name;
@@ -23,7 +32,7 @@ class ReplyMessage extends Document<ReplyMessage> {
   int good;
 
   @Field()
-  Future<String> fmcToken;
+  String fmcToken;
 
   /// プロフィール写真
   @StorageField()

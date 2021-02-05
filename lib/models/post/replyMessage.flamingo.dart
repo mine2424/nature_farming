@@ -58,7 +58,7 @@ void _$fromData(ReplyMessage doc, Map<String, dynamic> data) {
   doc.userId = Helper.valueFromKey<String>(data, 'userId');
   doc.content = Helper.valueFromKey<String>(data, 'content');
   doc.good = Helper.valueFromKey<int>(data, 'good');
-  doc.fmcToken = Helper.valueFromKey<Future<String>>(data, 'fmcToken');
+  doc.fmcToken = Helper.valueFromKey<String>(data, 'fmcToken');
 
   doc.postImage = Helper.storageFile(data, 'postImage');
 }
