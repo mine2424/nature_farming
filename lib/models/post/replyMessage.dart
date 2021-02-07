@@ -26,6 +26,9 @@ class ReplyMessage extends Document<ReplyMessage> {
   String userId;
 
   @Field()
+  String userImage;
+
+  @Field()
   String content;
 
   @Field()

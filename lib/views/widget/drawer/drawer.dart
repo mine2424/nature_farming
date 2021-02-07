@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/use_case/account/account_notifier.dart';
+import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/profile/edit_profile.dart';
 
-Drawer drawer(BuildContext context) {
+Drawer drawer({
+  BuildContext context,
+  AccountNotifier notifier,
+  AccountState state,
+}) {
   return Drawer(
     // TODO(mine2424):add profile like twitter.
     child: ListView(
       children: [
         UserAccountsDrawerHeader(
-          accountName: Text('flutter'),
-          decoration: BoxDecoration(
-            color: AppColor.mainColor,
-          ),
+          accountName: Text(state.userInfo?.name.toString()),
+          decoration: const BoxDecoration(color: AppColor.mainColor),
           currentAccountPicture: CircleAvatar(
-            backgroundImage: NetworkImage(
-                'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png'),
+            backgroundImage: NetworkImage(state.userInfo.userImage.url),
           ),
         ),
         ListTile(

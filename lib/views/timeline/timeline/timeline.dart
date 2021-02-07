@@ -13,7 +13,7 @@ class TimeLinePage extends StatelessWidget {
     return MultiProvider(
       providers: [
         StateNotifierProvider<SnsNotifier, SnsState>(
-          create: (context) => SnsNotifier(),
+          create: (context) => SnsNotifier(isFetchReplyMessage: false),
         ),
       ],
       child: const TimeLinePage._(),

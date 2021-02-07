@@ -129,7 +129,7 @@ class _RootPageState extends State<RootPage> {
 
   void _showMainPage() => Navigator.of(context, rootNavigator: true)
           .pushReplacement<MaterialPageRoute, void>(MaterialPageRoute(
-        builder: (_) => HomePage(),
+        builder: (_) => HomePage.wrapped(),
       ));
 
   void _showLoginPage() => Navigator.of(context, rootNavigator: true)

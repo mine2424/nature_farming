@@ -41,7 +41,12 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
 
   void _finishLoading() => state = state.copyWith(isLoading: false);
 
+  void _startLoadingReply() => state = state.copyWith(isLoadingReply: true);
+
+  void _finishLoadingReply() => state = state.copyWith(isLoadingReply: false);
+
   Future<void> pushWithReload({BuildContext context, Widget page}) async {
+    /// NOTE: disposeのbat connectはnotifierにnavigatorを移動すれば解決。
     await Navigator.push(
       context,
       MaterialPageRoute<void>(
@@ -51,10 +56,30 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
 
   void saveContent(String content) => state = state.copyWith(content: content);
 
-  void savePostImage() async {
+  Future savePostImage() async {
     final pickedFile =
         await ImagePicker().getImage(source: ImageSource.gallery);
     state = state.copyWith(image: File(pickedFile.path));
+  }
+
+  Future<void> countUpGood(int goods, String docId) async {
+    final doc = Post(id: docId)..good = goods + 1;
+    await documentAccessor.update(doc);
+  }
+
+  Future<void> countUpReplyGood({
+    int goods,
+    String postDocId,
+    String replyDocId,
+  }) async {
+    final doc = Post(id: postDocId);
+    final replyDoc = ReplyMessage(
+      id: replyDocId,
+      collectionRef: doc.replyMessage.ref,
+    )..good = goods + 1;
+    //TODO: create isPressedgood procession
+    // state = state.copyWith(good: true);
+    await documentAccessor.update(replyDoc);
   }
 
   void fetch() {
@@ -73,14 +98,16 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
   }
 
   Future<void> fetchReplyMessage(String postDocId) async {
-    // final replyMessages = snapshot.docs.map((e) => )
+    _startLoadingReply();
     final postDoc = Post(id: postDocId);
     final replyPath = Document.path<ReplyMessage>(
         collectionPath: postDoc.replyMessage.ref.path);
-    final snapshot = await firestoreInstance.collection(replyPath).get();
-    final list =
-        snapshot.docs.map((item) => ReplyMessage(snapshot: item)).toList();
-    state = state.copyWith(replyMessages: list);
+    firestoreInstance.collection(replyPath).snapshots().listen((snapshot) {
+      final list =
+          snapshot.docs.map((item) => ReplyMessage(snapshot: item)).toList();
+      state = state.copyWith(replyMessages: list);
+      _finishLoadingReply();
+    });
   }
 
   Future<void> addPost() async {
@@ -89,11 +116,22 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
       ..name = userInfo.name
       ..content = state.content
       ..good = 0
-      ..userId = userInfo.userId;
+      ..userId = userInfo.id;
+
     if (state.image != null) {
       await storage.saveWithDoc(doc.reference, 'postImage', state.image);
     }
-    batch.save(doc);
+    if (userInfo.userImage?.url != null) {
+      batch
+        ..save(doc)
+        ..update(Post(id: doc.id)..userImage = userInfo.userImage.url);
+    } else {
+      batch
+        ..save(doc)
+        ..update(Post(id: doc.id)
+          ..userImage =
+              'https://firebasestorage.googleapis.com/v0/b/nature-farming-c8b9d.appspot.com/o/user%2F%E8%BE%B2%E6%A5%AD%E6%9D%91%20(1).png?alt=media&token=35dd13e1-39ec-4239-822d-d2e9898d4fa0');
+    }
     await batch.commit();
   }
 
@@ -103,13 +141,25 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
     final replyDoc = ReplyMessage(collectionRef: postDoc.replyMessage.ref)
       ..name = userInfo.name
       ..content = state.content
-      ..good = state.good
-      ..userId = userInfo.userId
+      ..good = 0
+      ..userId = userInfo.id
       ..fmcToken = userInfo.fmcToken;
+
     if (state.image != null) {
       await storage.saveWithDoc(replyDoc.reference, 'postImage', state.image);
     }
     batch.save(replyDoc);
+    if (userInfo.userImage?.url != null) {
+      batch.update(
+          ReplyMessage(id: replyDoc.id, collectionRef: postDoc.replyMessage.ref)
+            ..userImage = userInfo.userImage.url);
+    } else {
+      batch
+        ..save(replyDoc)
+        ..update(Post(id: replyDoc.id)
+          ..userImage =
+              'https://firebasestorage.googleapis.com/v0/b/nature-farming-c8b9d.appspot.com/o/user%2F%E8%BE%B2%E6%A5%AD%E6%9D%91%20(1).png?alt=media&token=35dd13e1-39ec-4239-822d-d2e9898d4fa0');
+    }
     await batch.commit();
   }
 

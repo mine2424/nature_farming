@@ -10,6 +10,7 @@ part of 'post.dart';
 enum PostKey {
   name,
   userId,
+  userImage,
   content,
   good,
   fmcToken,
@@ -26,6 +27,8 @@ extension PostKeyExtension on PostKey {
         return 'name';
       case PostKey.userId:
         return 'userId';
+      case PostKey.userImage:
+        return 'userImage';
       case PostKey.content:
         return 'content';
       case PostKey.good:
@@ -49,6 +52,7 @@ Map<String, dynamic> _$toData(Post doc) {
   final data = <String, dynamic>{};
   Helper.writeNotNull(data, 'name', doc.name);
   Helper.writeNotNull(data, 'userId', doc.userId);
+  Helper.writeNotNull(data, 'userImage', doc.userImage);
   Helper.writeNotNull(data, 'content', doc.content);
   Helper.writeNotNull(data, 'good', doc.good);
   Helper.writeNotNull(data, 'fmcToken', doc.fmcToken);
@@ -63,6 +67,7 @@ Map<String, dynamic> _$toData(Post doc) {
 void _$fromData(Post doc, Map<String, dynamic> data) {
   doc.name = Helper.valueFromKey<String>(data, 'name');
   doc.userId = Helper.valueFromKey<String>(data, 'userId');
+  doc.userImage = Helper.valueFromKey<String>(data, 'userImage');
   doc.content = Helper.valueFromKey<String>(data, 'content');
   doc.good = Helper.valueFromKey<int>(data, 'good');
   doc.fmcToken = Helper.valueFromKey<Future<String>>(data, 'fmcToken');

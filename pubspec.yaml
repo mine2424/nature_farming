@@ -25,6 +25,7 @@ dependencies:
   flutter_state_notifier: ^0.4.2
   freezed_annotation:
 
+  photo_view:
   image_picker: ^0.6.7+21
   cupertino_icons: ^1.0.0
   introduction_screen: ^1.0.9

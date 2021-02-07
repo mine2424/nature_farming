@@ -18,12 +18,16 @@ class _$AccountStateTearOff {
       {bool isLoading = false,
       String name = '',
       String content = '',
-      String token = ''}) {
+      String token = '',
+      User userInfo,
+      File image}) {
     return _AccountState(
       isLoading: isLoading,
       name: name,
       content: content,
       token: token,
+      userInfo: userInfo,
+      image: image,
     );
   }
 }
@@ -38,6 +42,8 @@ mixin _$AccountState {
   String get name;
   String get content;
   String get token;
+  User get userInfo;
+  File get image;
 
   @JsonKey(ignore: true)
   $AccountStateCopyWith<AccountState> get copyWith;
@@ -48,7 +54,13 @@ abstract class $AccountStateCopyWith<$Res> {
   factory $AccountStateCopyWith(
           AccountState value, $Res Function(AccountState) then) =
       _$AccountStateCopyWithImpl<$Res>;
-  $Res call({bool isLoading, String name, String content, String token});
+  $Res call(
+      {bool isLoading,
+      String name,
+      String content,
+      String token,
+      User userInfo,
+      File image});
 }
 
 /// @nodoc
@@ -65,12 +77,16 @@ class _$AccountStateCopyWithImpl<$Res> implements $AccountStateCopyWith<$Res> {
     Object name = freezed,
     Object content = freezed,
     Object token = freezed,
+    Object userInfo = freezed,
+    Object image = freezed,
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       token: token == freezed ? _value.token : token as String,
+      userInfo: userInfo == freezed ? _value.userInfo : userInfo as User,
+      image: image == freezed ? _value.image : image as File,
     ));
   }
 }
@@ -82,7 +98,13 @@ abstract class _$AccountStateCopyWith<$Res>
           _AccountState value, $Res Function(_AccountState) then) =
       __$AccountStateCopyWithImpl<$Res>;
   @override
-  $Res call({bool isLoading, String name, String content, String token});
+  $Res call(
+      {bool isLoading,
+      String name,
+      String content,
+      String token,
+      User userInfo,
+      File image});
 }
 
 /// @nodoc
@@ -101,12 +123,16 @@ class __$AccountStateCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
     Object name = freezed,
     Object content = freezed,
     Object token = freezed,
+    Object userInfo = freezed,
+    Object image = freezed,
   }) {
     return _then(_AccountState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       token: token == freezed ? _value.token : token as String,
+      userInfo: userInfo == freezed ? _value.userInfo : userInfo as User,
+      image: image == freezed ? _value.image : image as File,
     ));
   }
 }
@@ -117,7 +143,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
       {this.isLoading = false,
       this.name = '',
       this.content = '',
-      this.token = ''})
+      this.token = '',
+      this.userInfo,
+      this.image})
       : assert(isLoading != null),
         assert(name != null),
         assert(content != null),
@@ -135,10 +163,14 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
   @JsonKey(defaultValue: '')
   @override
   final String token;
+  @override
+  final User userInfo;
+  @override
+  final File image;
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountState(isLoading: $isLoading, name: $name, content: $content, token: $token)';
+    return 'AccountState(isLoading: $isLoading, name: $name, content: $content, token: $token, userInfo: $userInfo, image: $image)';
   }
 
   @override
@@ -149,7 +181,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
       ..add(DiagnosticsProperty('isLoading', isLoading))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('content', content))
-      ..add(DiagnosticsProperty('token', token));
+      ..add(DiagnosticsProperty('token', token))
+      ..add(DiagnosticsProperty('userInfo', userInfo))
+      ..add(DiagnosticsProperty('image', image));
   }
 
   @override
@@ -165,7 +199,12 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
                 const DeepCollectionEquality()
                     .equals(other.content, content)) &&
             (identical(other.token, token) ||
-                const DeepCollectionEquality().equals(other.token, token)));
+                const DeepCollectionEquality().equals(other.token, token)) &&
+            (identical(other.userInfo, userInfo) ||
+                const DeepCollectionEquality()
+                    .equals(other.userInfo, userInfo)) &&
+            (identical(other.image, image) ||
+                const DeepCollectionEquality().equals(other.image, image)));
   }
 
   @override
@@ -174,7 +213,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
       const DeepCollectionEquality().hash(isLoading) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(content) ^
-      const DeepCollectionEquality().hash(token);
+      const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(userInfo) ^
+      const DeepCollectionEquality().hash(image);
 
   @JsonKey(ignore: true)
   @override
@@ -187,7 +228,9 @@ abstract class _AccountState implements AccountState {
       {bool isLoading,
       String name,
       String content,
-      String token}) = _$_AccountState;
+      String token,
+      User userInfo,
+      File image}) = _$_AccountState;
 
   @override
   bool get isLoading;
@@ -197,6 +240,10 @@ abstract class _AccountState implements AccountState {
   String get content;
   @override
   String get token;
+  @override
+  User get userInfo;
+  @override
+  File get image;
   @override
   @JsonKey(ignore: true)
   _$AccountStateCopyWith<_AccountState> get copyWith;

@@ -11,10 +11,11 @@ part 'sns_state.freezed.dart';
 abstract class SnsState with _$SnsState {
   const factory SnsState({
     @Default(false) bool isLoading,
+    @Default(false) bool isLoadingReply,
     @Default('') String name,
     @Default('') String content,
     @Default('') String fmcToken,
-    @Default(0) int good,
+    @Default(false) bool good,
     File image,
     List<Post> postItems,
     List<ReplyMessage> replyMessages,

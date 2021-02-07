@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/models/post/post.dart';
+import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 
-void replyMessage(BuildContext context, GlobalKey<FormState> formKey) {
+void replyMessage({
+  BuildContext context,
+  GlobalKey<FormState> formKey,
+  SnsNotifier notifier,
+  Post postItem,
+}) {
   showModalBottomSheet<void>(
     context: context,
     isScrollControlled: true,
@@ -21,14 +28,35 @@ void replyMessage(BuildContext context, GlobalKey<FormState> formKey) {
             child: Form(
               key: formKey,
               child: TextFormField(
+                onChanged: (value) {
+                  notifier.saveContent(value);
+                },
                 decoration: InputDecoration(
                   hintText: '返信してみよう',
-                  suffixIcon: IconButton(
-                    icon: const Icon(
-                      Icons.image,
-                      color: AppColor.mainColor,
-                    ),
-                    onPressed: () {},
+                  suffixIcon: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: const Icon(
+                          Icons.image,
+                          color: AppColor.mainColor,
+                        ),
+                        onPressed: () {
+                          //TODO: add image select function
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(
+                          Icons.send,
+                          color: AppColor.mainColor,
+                        ),
+                        onPressed: () {
+                          notifier.addReply(postItem.id);
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
                   ),
                 ),
               ),

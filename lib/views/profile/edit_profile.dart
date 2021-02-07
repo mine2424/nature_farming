@@ -62,9 +62,9 @@ class EditProfilePage extends StatelessWidget {
   }
 
   Widget _profileText() {
-    return Padding(
-      padding: const EdgeInsets.all(18.0),
-      child: const Text(
+    return const Padding(
+      padding: EdgeInsets.all(18),
+      child: Text(
         'Profile',
         style: TextStyle(
           fontSize: 35,
@@ -101,6 +101,7 @@ class EditProfilePage extends StatelessWidget {
     String myText,
     IconData icon,
   }) {
+    final notifier = context.read<AccountNotifier>();
     return Material(
       elevation: 4,
       shadowColor: Colors.grey,
@@ -115,7 +116,11 @@ class EditProfilePage extends StatelessWidget {
         validator: (input) {
           return null;
         },
-        onSaved: (input) {},
+        onSaved: (input) {
+          (selectName == 'name')
+              ? notifier.saveName(input)
+              : notifier.saveContent(input);
+        },
         initialValue: myText,
         decoration: InputDecoration(
             border: OutlineInputBorder(
@@ -143,7 +148,7 @@ class EditProfilePage extends StatelessWidget {
   Widget _textListCalling(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final notifier = context.read<AccountNotifier>();
-    final state = context.read<AccountNotifier>();
+    // final state = context.read<AccountNotifier>();
 
     return Container(
       width: double.infinity,
@@ -155,29 +160,30 @@ class EditProfilePage extends StatelessWidget {
             const SizedBox(height: 30),
             FlatButton(
               onPressed: () {
-                // getImageFromGallery();
+                notifier.saveProfileImage();
               },
               child: Material(
-                  elevation: 4,
-                  shadowColor: Colors.grey,
-                  color: AppColor.mainColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(
-                      10,
+                elevation: 4,
+                shadowColor: Colors.grey,
+                color: AppColor.mainColor,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(
+                    10,
+                  ),
+                ),
+                child: const SizedBox(
+                  height: 40,
+                  child: Center(
+                    child: Text(
+                      '画像を選択',
+                      style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          letterSpacing: 0.5),
                     ),
                   ),
-                  child: SizedBox(
-                    height: 40,
-                    child: Center(
-                      child: const Text(
-                        '画像を選択',
-                        style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.white,
-                            letterSpacing: 0.5),
-                      ),
-                    ),
-                  )),
+                ),
+              ),
             ),
             const SizedBox(height: 16),
             _textFormField(
@@ -200,15 +206,15 @@ class EditProfilePage extends StatelessWidget {
               width: double.infinity,
               child: RaisedButton(
                 color: AppColor.mainColor,
-                child: Center(
-                  child: const Text(
+                child: const Center(
+                  child: Text(
                     '更新',
                     style: TextStyle(
                         fontSize: 23, color: Colors.white, letterSpacing: 0.5),
                   ),
                 ),
                 onPressed: () {
-                  // editConsumerInfo();
+                  notifier.updateUser();
                 },
               ),
             ),

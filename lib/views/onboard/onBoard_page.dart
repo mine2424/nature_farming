@@ -17,7 +17,7 @@ class OnBoardPage extends StatelessWidget {
     return MultiProvider(
       providers: [
         StateNotifierProvider<AccountNotifier, AccountState>(
-          create: (context) => AccountNotifier(),
+          create: (context) => AccountNotifier(context: context),
         ),
       ],
       child: const OnBoardPage._(),
@@ -27,11 +27,11 @@ class OnBoardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<AccountNotifier>();
-    const bodyStyle = TextStyle(fontSize: 19.0);
+    const bodyStyle = TextStyle(fontSize: 19);
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
-      descriptionPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      descriptionPadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
     );
@@ -92,7 +92,7 @@ class OnBoardPage extends StatelessWidget {
           image: _buildImage(),
           footer: RaisedButton(
             onPressed: () {
-              introKey.currentState?.animateScroll(0);
+              notifier.saveProfileImage();
             },
             child: const Text(
               '画像を選択',
@@ -127,12 +127,7 @@ class OnBoardPage extends StatelessWidget {
           if (startUp == StartUpType.incompleteUser) {
             return notifier.createUser();
           }
-          await Navigator.of(context, rootNavigator: true)
-              .pushReplacement<MaterialPageRoute, void>(
-            MaterialPageRoute(
-              builder: (_) => HomePage(),
-            ),
-          );
+          await notifier.pushReplacementHomePage();
         }
       },
       skip: const Text('Skip'),

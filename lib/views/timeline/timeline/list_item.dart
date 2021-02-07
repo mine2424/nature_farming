@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/models/post/post.dart';
+import 'package:nature_farming/repository/index.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/views/timeline/detail_item/post_item.dart';
+import 'package:nature_farming/views/timeline/widget/image_detail_page.dart';
+import 'package:nature_farming/views/timeline/widget/popup_menu_button.dart';
 
 Widget listItem({
   BuildContext context,
@@ -17,52 +20,77 @@ Widget listItem({
       );
     },
     child: Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(16),
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(200)),
-            child: Image.network(
-              'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png',
-              width: 60,
-              fit: BoxFit.cover,
+          padding: const EdgeInsets.all(8),
+          child: Container(
+            width: MediaQuery.of(context).size.width * 0.16,
+            height: MediaQuery.of(context).size.width * 0.16,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+              image: DecorationImage(
+                fit: BoxFit.cover,
+                image: NetworkImage(
+                  postItem.userImage,
+                ),
+              ),
             ),
           ),
         ),
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               const SizedBox(height: 16),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Text(
-                    postItem.name.toString(),
-                    style: const TextStyle(fontWeight: FontWeight.bold),
-                  ),
-                ],
+              Text(
+                postItem.name.toString(),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Padding(
                 padding: const EdgeInsets.only(top: 8, right: 8),
                 child: Text(postItem.content),
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 8, right: 8),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(12)),
-                  child: (postItem.postImage == null)
-                      ? const SizedBox()
-                      : Image.network(
-                          postItem.postImage.url,
-                          height: 200,
+              if (postItem.postImage?.url != null)
+                Stack(
+                  children: [
+                    GestureDetector(
+                      onTap: () => Navigator.push<void>(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BoardDetailsImage(
+                            image: postItem.postImage.url,
+                          ),
                         ),
+                      ),
+                      child: Hero(
+                        tag: 'heroCount.toString()',
+                        child: Image.network(
+                          postItem.postImage.url,
+                          filterQuality: FilterQuality.medium,
+                          fit: BoxFit.cover,
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          height: 180,
+                          loadingBuilder: (context, child, loadingProgress) {
+                            if (loadingProgress == null) return child;
+                            return Center(
+                              child: CircularProgressIndicator(
+                                  valueColor:
+                                      const AlwaysStoppedAnimation<Color>(
+                                          Colors.black),
+                                  value: loadingProgress.expectedTotalBytes !=
+                                          null
+                                      ? loadingProgress.cumulativeBytesLoaded /
+                                          loadingProgress.expectedTotalBytes
+                                      : null),
+                            );
+                          },
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
                 child: Row(
@@ -71,7 +99,7 @@ Widget listItem({
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: IconButton(
-                          icon: Icon(Icons.reply_outlined),
+                          icon: const Icon(Icons.reply_outlined),
                           onPressed: () {
                             Navigator.push(
                               context,
@@ -89,11 +117,13 @@ Widget listItem({
                         children: [
                           IconButton(
                             iconSize: 20,
-                            icon: Icon(
+                            icon: const Icon(
                               Icons.thumb_up_alt,
                               color: Colors.red,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              notifier.countUpGood(postItem.good, postItem.id);
+                            },
                           ),
                           Padding(
                             padding: const EdgeInsets.all(8),
@@ -104,14 +134,9 @@ Widget listItem({
                     ),
                     Expanded(
                       child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: IconButton(
-                          icon: Icon(Icons.share_sharp),
-                          onPressed: () {
-                            notifier.deletePost(postItem.id);
-                          },
-                        ),
-                      ),
+                          alignment: Alignment.centerLeft,
+                          child: popupMenuButtonWidget(
+                              postItem: postItem, notifier: notifier)),
                     ),
                   ],
                 ),

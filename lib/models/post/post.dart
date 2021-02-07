@@ -25,6 +25,9 @@ class Post extends Document<Post> {
   String userId;
 
   @Field()
+  String userImage;
+
+  @Field()
   String content;
 
   @Field()

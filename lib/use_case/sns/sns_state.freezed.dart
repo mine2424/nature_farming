@@ -16,15 +16,17 @@ class _$SnsStateTearOff {
 // ignore: unused_element
   _SnsState call(
       {bool isLoading = false,
+      bool isLoadingReply = false,
       String name = '',
       String content = '',
       String fmcToken = '',
-      int good = 0,
+      bool good = false,
       File image,
       List<Post> postItems,
       List<ReplyMessage> replyMessages}) {
     return _SnsState(
       isLoading: isLoading,
+      isLoadingReply: isLoadingReply,
       name: name,
       content: content,
       fmcToken: fmcToken,
@@ -43,10 +45,11 @@ const $SnsState = _$SnsStateTearOff();
 /// @nodoc
 mixin _$SnsState {
   bool get isLoading;
+  bool get isLoadingReply;
   String get name;
   String get content;
   String get fmcToken;
-  int get good;
+  bool get good;
   File get image;
   List<Post> get postItems;
   List<ReplyMessage> get replyMessages;
@@ -61,10 +64,11 @@ abstract class $SnsStateCopyWith<$Res> {
       _$SnsStateCopyWithImpl<$Res>;
   $Res call(
       {bool isLoading,
+      bool isLoadingReply,
       String name,
       String content,
       String fmcToken,
-      int good,
+      bool good,
       File image,
       List<Post> postItems,
       List<ReplyMessage> replyMessages});
@@ -81,6 +85,7 @@ class _$SnsStateCopyWithImpl<$Res> implements $SnsStateCopyWith<$Res> {
   @override
   $Res call({
     Object isLoading = freezed,
+    Object isLoadingReply = freezed,
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
@@ -91,10 +96,13 @@ class _$SnsStateCopyWithImpl<$Res> implements $SnsStateCopyWith<$Res> {
   }) {
     return _then(_value.copyWith(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      isLoadingReply: isLoadingReply == freezed
+          ? _value.isLoadingReply
+          : isLoadingReply as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
-      good: good == freezed ? _value.good : good as int,
+      good: good == freezed ? _value.good : good as bool,
       image: image == freezed ? _value.image : image as File,
       postItems:
           postItems == freezed ? _value.postItems : postItems as List<Post>,
@@ -112,10 +120,11 @@ abstract class _$SnsStateCopyWith<$Res> implements $SnsStateCopyWith<$Res> {
   @override
   $Res call(
       {bool isLoading,
+      bool isLoadingReply,
       String name,
       String content,
       String fmcToken,
-      int good,
+      bool good,
       File image,
       List<Post> postItems,
       List<ReplyMessage> replyMessages});
@@ -133,6 +142,7 @@ class __$SnsStateCopyWithImpl<$Res> extends _$SnsStateCopyWithImpl<$Res>
   @override
   $Res call({
     Object isLoading = freezed,
+    Object isLoadingReply = freezed,
     Object name = freezed,
     Object content = freezed,
     Object fmcToken = freezed,
@@ -143,10 +153,13 @@ class __$SnsStateCopyWithImpl<$Res> extends _$SnsStateCopyWithImpl<$Res>
   }) {
     return _then(_SnsState(
       isLoading: isLoading == freezed ? _value.isLoading : isLoading as bool,
+      isLoadingReply: isLoadingReply == freezed
+          ? _value.isLoadingReply
+          : isLoadingReply as bool,
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       fmcToken: fmcToken == freezed ? _value.fmcToken : fmcToken as String,
-      good: good == freezed ? _value.good : good as int,
+      good: good == freezed ? _value.good : good as bool,
       image: image == freezed ? _value.image : image as File,
       postItems:
           postItems == freezed ? _value.postItems : postItems as List<Post>,
@@ -161,14 +174,16 @@ class __$SnsStateCopyWithImpl<$Res> extends _$SnsStateCopyWithImpl<$Res>
 class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   const _$_SnsState(
       {this.isLoading = false,
+      this.isLoadingReply = false,
       this.name = '',
       this.content = '',
       this.fmcToken = '',
-      this.good = 0,
+      this.good = false,
       this.image,
       this.postItems,
       this.replyMessages})
       : assert(isLoading != null),
+        assert(isLoadingReply != null),
         assert(name != null),
         assert(content != null),
         assert(fmcToken != null),
@@ -177,6 +192,9 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   @JsonKey(defaultValue: false)
   @override
   final bool isLoading;
+  @JsonKey(defaultValue: false)
+  @override
+  final bool isLoadingReply;
   @JsonKey(defaultValue: '')
   @override
   final String name;
@@ -186,9 +204,9 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   @JsonKey(defaultValue: '')
   @override
   final String fmcToken;
-  @JsonKey(defaultValue: 0)
+  @JsonKey(defaultValue: false)
   @override
-  final int good;
+  final bool good;
   @override
   final File image;
   @override
@@ -198,7 +216,7 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'SnsState(isLoading: $isLoading, name: $name, content: $content, fmcToken: $fmcToken, good: $good, image: $image, postItems: $postItems, replyMessages: $replyMessages)';
+    return 'SnsState(isLoading: $isLoading, isLoadingReply: $isLoadingReply, name: $name, content: $content, fmcToken: $fmcToken, good: $good, image: $image, postItems: $postItems, replyMessages: $replyMessages)';
   }
 
   @override
@@ -207,6 +225,7 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
     properties
       ..add(DiagnosticsProperty('type', 'SnsState'))
       ..add(DiagnosticsProperty('isLoading', isLoading))
+      ..add(DiagnosticsProperty('isLoadingReply', isLoadingReply))
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('fmcToken', fmcToken))
@@ -223,6 +242,9 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
             (identical(other.isLoading, isLoading) ||
                 const DeepCollectionEquality()
                     .equals(other.isLoading, isLoading)) &&
+            (identical(other.isLoadingReply, isLoadingReply) ||
+                const DeepCollectionEquality()
+                    .equals(other.isLoadingReply, isLoadingReply)) &&
             (identical(other.name, name) ||
                 const DeepCollectionEquality().equals(other.name, name)) &&
             (identical(other.content, content) ||
@@ -247,6 +269,7 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
   int get hashCode =>
       runtimeType.hashCode ^
       const DeepCollectionEquality().hash(isLoading) ^
+      const DeepCollectionEquality().hash(isLoadingReply) ^
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(fmcToken) ^
@@ -264,10 +287,11 @@ class _$_SnsState with DiagnosticableTreeMixin implements _SnsState {
 abstract class _SnsState implements SnsState {
   const factory _SnsState(
       {bool isLoading,
+      bool isLoadingReply,
       String name,
       String content,
       String fmcToken,
-      int good,
+      bool good,
       File image,
       List<Post> postItems,
       List<ReplyMessage> replyMessages}) = _$_SnsState;
@@ -275,13 +299,15 @@ abstract class _SnsState implements SnsState {
   @override
   bool get isLoading;
   @override
+  bool get isLoadingReply;
+  @override
   String get name;
   @override
   String get content;
   @override
   String get fmcToken;
   @override
-  int get good;
+  bool get good;
   @override
   File get image;
   @override

@@ -10,6 +10,7 @@ part of 'replyMessage.dart';
 enum ReplyMessageKey {
   name,
   userId,
+  userImage,
   content,
   good,
   fmcToken,
@@ -24,6 +25,8 @@ extension ReplyMessageKeyExtension on ReplyMessageKey {
         return 'name';
       case ReplyMessageKey.userId:
         return 'userId';
+      case ReplyMessageKey.userImage:
+        return 'userImage';
       case ReplyMessageKey.content:
         return 'content';
       case ReplyMessageKey.good:
@@ -43,6 +46,7 @@ Map<String, dynamic> _$toData(ReplyMessage doc) {
   final data = <String, dynamic>{};
   Helper.writeNotNull(data, 'name', doc.name);
   Helper.writeNotNull(data, 'userId', doc.userId);
+  Helper.writeNotNull(data, 'userImage', doc.userImage);
   Helper.writeNotNull(data, 'content', doc.content);
   Helper.writeNotNull(data, 'good', doc.good);
   Helper.writeNotNull(data, 'fmcToken', doc.fmcToken);
@@ -56,6 +60,7 @@ Map<String, dynamic> _$toData(ReplyMessage doc) {
 void _$fromData(ReplyMessage doc, Map<String, dynamic> data) {
   doc.name = Helper.valueFromKey<String>(data, 'name');
   doc.userId = Helper.valueFromKey<String>(data, 'userId');
+  doc.userImage = Helper.valueFromKey<String>(data, 'userImage');
   doc.content = Helper.valueFromKey<String>(data, 'content');
   doc.good = Helper.valueFromKey<int>(data, 'good');
   doc.fmcToken = Helper.valueFromKey<String>(data, 'fmcToken');

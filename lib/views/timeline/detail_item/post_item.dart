@@ -4,6 +4,7 @@ import 'package:nature_farming/models/post/post.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/use_case/sns/sns_state.dart';
 import 'package:nature_farming/views/timeline/detail_item/reply_list.dart';
+import 'package:nature_farming/views/timeline/widget/popup_menu_button.dart';
 import 'package:nature_farming/views/widget/appBar/appBar.dart';
 import 'package:nature_farming/views/widget/dialog/reply_dialog.dart';
 import 'package:provider/provider.dart';
@@ -41,7 +42,6 @@ class PostItemPage extends StatelessWidget {
                 children: [
                   const SizedBox(height: 8),
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Padding(
@@ -61,9 +61,18 @@ class PostItemPage extends StatelessWidget {
                       ),
                     ],
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(postItems[index].content),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 16, top: 8, bottom: 8, right: 16),
+                        child: Text(
+                          postItems[index].content,
+                          style: const TextStyle(fontSize: 16),
+                        ),
+                      ),
+                    ],
                   ),
                   (postItems[index].imageDate == null)
                       ? const SizedBox()
@@ -73,56 +82,61 @@ class PostItemPage extends StatelessWidget {
                             borderRadius:
                                 const BorderRadius.all(Radius.circular(12)),
                             child: Image.network(
-                              'https://pbs.twimg.com/media/ErdYFPyUUAQNWxc?format=jpg&name=large',
+                              postItems[index].imageDate.url,
                               height: 230,
                             ),
                           ),
                         ),
                   const Divider(),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 8),
-                    child: Row(
-                      children: [
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              icon: Icon(Icons.reply_outlined),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            icon: Icon(Icons.reply_outlined),
+                            onPressed: () {
+                              // print('open replyMessage');
+                              replyMessage(
+                                context: context,
+                                formKey: _formKey,
+                                notifier: notifier,
+                                postItem: postItems[index],
+                              );
+                            },
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Row(
+                          children: [
+                            IconButton(
+                              iconSize: 20,
+                              icon: Icon(
+                                Icons.thumb_up_alt,
+                                color: Colors.red,
+                              ),
                               onPressed: () {
-                                replyMessage(context, _formKey);
+                                notifier.countUpGood(
+                                  postItems[index].good,
+                                  postItems[index].id,
+                                );
                               },
                             ),
+                            Text(postItems[index].good.toString()),
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: popupMenuButtonWidget(
+                            postItem: postItems[index],
+                            notifier: notifier,
                           ),
                         ),
-                        Expanded(
-                          child: Row(
-                            children: [
-                              IconButton(
-                                iconSize: 20,
-                                icon: Icon(
-                                  Icons.thumb_up_alt,
-                                  color: Colors.red,
-                                ),
-                                onPressed: () {},
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8),
-                                child: Text('23'),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Expanded(
-                          child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: IconButton(
-                              icon: Icon(Icons.share_sharp),
-                              onPressed: () {},
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                   const Divider(),
                   replyList(
