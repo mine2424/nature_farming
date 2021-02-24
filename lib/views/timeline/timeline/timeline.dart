@@ -1,6 +1,9 @@
+import 'package:admob_flutter/admob_flutter.dart';
+import 'package:firebase_admob/firebase_admob.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/models/ad_manager/ad_manager.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/use_case/sns/sns_state.dart';
 import 'package:nature_farming/views/timeline/timeline/list_item.dart';
@@ -23,24 +26,11 @@ class TimeLinePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.read<SnsNotifier>();
-    final postItems = context.select((SnsState value) => value.postItems);
     final isLoading = context.select((SnsState value) => value.isLoading);
     return Scaffold(
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : ListView.separated(
-              itemCount: postItems.length,
-              separatorBuilder: (BuildContext context, int index) =>
-                  const Divider(),
-              itemBuilder: (BuildContext context, int index) {
-                final postItem = postItems[index];
-                return listItem(
-                    context: context,
-                    index: index,
-                    notifier: notifier,
-                    postItem: postItem);
-              },
-            ),
+          : _buildListView(context),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         backgroundColor: AppColor.mainColor,
@@ -49,15 +39,38 @@ class TimeLinePage extends StatelessWidget {
             context: context,
             page: PostDialog.wrapped(),
           );
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute<void>(
-          //     builder: (context) => PostDialog.wrapped(),
-          //     fullscreenDialog: true,
-          //   ),
-          // );
         },
       ),
     );
+  }
+
+  Widget _buildListView(BuildContext context) {
+    final postItems = context.select((SnsState value) => value.postItems);
+    List<Widget> _children = List<Widget>.generate(
+      postItems.length,
+      (int index) => listItem(
+        context: context,
+        index: index,
+        notifier: context.read<SnsNotifier>(),
+        postItem: postItems[index],
+      ),
+    );
+    _children.insert(
+      6,
+      Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: AdmobBanner(
+              adUnitId: AdManager.bannerAdUnitId,
+              // adUnitId: BannerAd.testAdUnitId,
+              adSize: AdmobBannerSize.LEADERBOARD,
+            ),
+          ),
+          const Divider()
+        ],
+      ),
+    );
+    return ListView(children: _children);
   }
 }

@@ -1,9 +1,7 @@
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flamingo/flamingo.dart';
 import 'package:flutter/material.dart';
-import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/onboard/onBoard_page.dart';
 import 'package:provider/provider.dart';
 import 'package:nature_farming/views/home/home_page.dart';
@@ -52,50 +50,36 @@ class _RootPageState extends State<RootPage> {
   }
 
   Future<void> _pushNotificationConfigure() async {
-    FirebaseMessaging()
-      ..requestNotificationPermissions()
-      ..onIosSettingsRegistered.listen(
-        (IosNotificationSettings settings) {
-          const IosNotificationSettings(
-            sound: true,
-            badge: true,
-            alert: true,
-          );
-        },
-      )
-      ..configure(
-        onBackgroundMessage:
-            Platform.isAndroid ? myBackgroundMessageHandler : null,
-        onMessage: (Map<String, dynamic> message) async {
-          print('onMessage: $message');
-          // final pnm = PushNotificationMessage.fromJson(message);
-          // showSimpleNotification(
-          //   Text(
-          //     pnm.title,
-          //     style: const TextStyle(
-          //       fontWeight: FontWeight.bold,
-          //       fontSize: 18,
-          //     ),
-          //   ),
-          //   subtitle: Text(pnm.body),
-          //   background: kAppBlue100,
-          // );
-        },
-        onResume: (Map<String, dynamic> message) async {
-          print('onResume: $message');
-        },
-        onLaunch: (Map<String, dynamic> message) async {
-          print('onLaunch: $message');
-        },
-      );
+    await FirebaseMessaging.instance.getInitialMessage().then(
+      (RemoteMessage message) {
+        if (message != null) {
+          print('get initialMessage : $message');
+        }
+      },
+    );
+
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      final notification = message.notification;
+      final android = message.notification?.android;
+      if (notification != null && android != null) {
+        print('onMessaging : $message');
+      }
+    });
+
+    FirebaseMessaging.onMessageOpenedApp.listen((RemoteMessage message) {
+      print('A new onMessageOpenedApp event was published!');
+    });
+
     final notifier = context.read<AccountNotifier>();
-    final token = FirebaseMessaging().getToken();
+    final token = FirebaseMessaging.instance.getToken();
     notifier.saveMessagingToken(token.toString());
     // ignore: cascade_invocations
     // _firebaseMessaging.subscribeToTopic('all');
   }
 
   Future<void> _afterBuild(Duration duration) async {
+    // TODO(mine2424): メンテナンスでアプリを使えない様にする（機能別で）
+    // TODO(mine2424): ひな恋チャットも同じような実装をする。
     await Future<void>.delayed(const Duration(seconds: 1));
 
     final accountNotifier = context.read<AccountNotifier>();

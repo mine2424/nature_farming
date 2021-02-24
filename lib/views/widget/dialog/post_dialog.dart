@@ -1,12 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:nature_farming/common/color/color.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/use_case/sns/sns_state.dart';
-import 'package:nature_farming/views/widget/sizedBox/sizedBox.dart';
 import 'package:provider/provider.dart';
 
 class PostDialog extends StatelessWidget {

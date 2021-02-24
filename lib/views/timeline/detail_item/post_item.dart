@@ -131,6 +131,7 @@ class PostItemPage extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: popupMenuButtonWidget(
+                            context: context,
                             postItem: postItems[index],
                             notifier: notifier,
                           ),

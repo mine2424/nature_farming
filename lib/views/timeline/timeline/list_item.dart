@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:nature_farming/models/post/post.dart';
-import 'package:nature_farming/repository/index.dart';
 import 'package:nature_farming/use_case/sns/sns_notifier.dart';
 import 'package:nature_farming/views/timeline/detail_item/post_item.dart';
 import 'package:nature_farming/views/timeline/widget/image_detail_page.dart';
@@ -23,9 +22,9 @@ Widget listItem({
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(10),
           child: Container(
-            width: MediaQuery.of(context).size.width * 0.16,
+            width: MediaQuery.of(context).size.width * 0.2,
             height: MediaQuery.of(context).size.width * 0.16,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
@@ -49,47 +48,51 @@ Widget listItem({
                 style: const TextStyle(fontWeight: FontWeight.bold),
               ),
               Padding(
-                padding: const EdgeInsets.only(top: 8, right: 8),
-                child: Text(postItem.content),
+                padding: const EdgeInsets.only(top: 8, right: 8, bottom: 8),
+                child: Text(postItem.content,
+                    style: const TextStyle(fontSize: 16)),
               ),
               if (postItem.postImage?.url != null)
-                Stack(
-                  children: [
-                    GestureDetector(
-                      onTap: () => Navigator.push<void>(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BoardDetailsImage(
-                            image: postItem.postImage.url,
+                Center(
+                  child: Stack(
+                    children: [
+                      GestureDetector(
+                        onTap: () => Navigator.push<void>(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BoardDetailsImage(
+                              image: postItem.postImage.url,
+                            ),
                           ),
                         ),
-                      ),
-                      child: Hero(
-                        tag: 'heroCount.toString()',
-                        child: Image.network(
-                          postItem.postImage.url,
-                          filterQuality: FilterQuality.medium,
-                          fit: BoxFit.cover,
-                          width: MediaQuery.of(context).size.width * 0.55,
-                          height: 180,
-                          loadingBuilder: (context, child, loadingProgress) {
-                            if (loadingProgress == null) return child;
-                            return Center(
-                              child: CircularProgressIndicator(
-                                  valueColor:
-                                      const AlwaysStoppedAnimation<Color>(
-                                          Colors.black),
-                                  value: loadingProgress.expectedTotalBytes !=
-                                          null
-                                      ? loadingProgress.cumulativeBytesLoaded /
-                                          loadingProgress.expectedTotalBytes
-                                      : null),
-                            );
-                          },
+                        child: Hero(
+                          tag: 'heroCount.toString()',
+                          child: Image.network(
+                            postItem.postImage.url,
+                            filterQuality: FilterQuality.medium,
+                            fit: BoxFit.cover,
+                            width: MediaQuery.of(context).size.width * 0.55,
+                            height: 180,
+                            loadingBuilder: (context, child, loadingProgress) {
+                              if (loadingProgress == null) return child;
+                              return Center(
+                                child: CircularProgressIndicator(
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                            Colors.black),
+                                    value: loadingProgress.expectedTotalBytes !=
+                                            null
+                                        ? loadingProgress
+                                                .cumulativeBytesLoaded /
+                                            loadingProgress.expectedTotalBytes
+                                        : null),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
                 ),
               Padding(
                 padding: const EdgeInsets.only(top: 8),
@@ -136,11 +139,14 @@ Widget listItem({
                       child: Align(
                           alignment: Alignment.centerLeft,
                           child: popupMenuButtonWidget(
-                              postItem: postItem, notifier: notifier)),
+                              context: context,
+                              postItem: postItem,
+                              notifier: notifier)),
                     ),
                   ],
                 ),
-              )
+              ),
+              const Divider()
             ],
           ),
         )

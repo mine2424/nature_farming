@@ -2,12 +2,14 @@ import 'dart:io';
 import 'package:flamingo/flamingo.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:nature_farming/common/constants/constants.dart';
 import 'package:nature_farming/models/post/post.dart';
 import 'package:nature_farming/models/post/replyMessage.dart';
 import 'package:nature_farming/models/user/index.dart';
 import 'package:nature_farming/models/user/user.dart' as users;
 import 'package:nature_farming/repository/index.dart';
 import 'package:nature_farming/use_case/sns/sns_state.dart';
+import 'package:share/share.dart';
 import 'package:state_notifier/state_notifier.dart';
 
 class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
@@ -82,6 +84,10 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
     await documentAccessor.update(replyDoc);
   }
 
+  Future snsShare({String name, String content}) async {
+    await Share.share(content, subject: name);
+  }
+
   void fetch() {
     _startLoading();
     print('start fetch');
@@ -128,9 +134,7 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
     } else {
       batch
         ..save(doc)
-        ..update(Post(id: doc.id)
-          ..userImage =
-              'https://firebasestorage.googleapis.com/v0/b/nature-farming-c8b9d.appspot.com/o/user%2F%E8%BE%B2%E6%A5%AD%E6%9D%91%20(1).png?alt=media&token=35dd13e1-39ec-4239-822d-d2e9898d4fa0');
+        ..update(Post(id: doc.id)..userImage = Constants.appImage);
     }
     await batch.commit();
   }

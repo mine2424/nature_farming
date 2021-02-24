@@ -1,11 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_state_notifier/flutter_state_notifier.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:flutter/material.dart';
 import 'package:nature_farming/common/color/color.dart';
+import 'package:nature_farming/common/constants/constants.dart';
 import 'package:nature_farming/common/type/types.dart';
 import 'package:nature_farming/use_case/account/account_notifier.dart';
 import 'package:nature_farming/use_case/account/account_state.dart';
-import 'package:nature_farming/views/home/home_page.dart';
 import 'package:provider/provider.dart';
 
 final introKey = GlobalKey<IntroductionScreenState>();
@@ -27,69 +27,71 @@ class OnBoardPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = context.watch<AccountNotifier>();
+    final state = context.select((AccountState value) => value);
     const bodyStyle = TextStyle(fontSize: 19);
     const pageDecoration = PageDecoration(
       titleTextStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.w700),
       bodyTextStyle: bodyStyle,
       descriptionPadding: EdgeInsets.fromLTRB(16, 0, 16, 16),
-      pageColor: Colors.white,
+      pageColor: Color(0xFFfffae5),
       imagePadding: EdgeInsets.zero,
     );
 
     return IntroductionScreen(
+      globalBackgroundColor: AppColor.mainColor,
       key: introKey,
+      dotsDecorator: DotsDecorator(activeColor: AppColor.mainColor),
       pages: [
         PageViewModel(
-          title: "Fractional shares",
-          body:
-              "Instead of having to buy an entire share, invest any amount you want.",
-          image: _buildImage(),
-          decoration: pageDecoration,
-        ),
-        PageViewModel(
-          title: "Learn as you go",
-          body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
+          title: '自然農民へようこそ！',
+          body: 'このアプリは自然農をされている方のためのSNS交流アプリです。',
           image: _buildImage(),
           decoration: pageDecoration,
         ),
         PageViewModel(
           title: 'ユーザー登録しましょう',
           bodyWidget: Form(
-              key: notifier.formkey,
-              child: Column(
-                children: [
-                  TextField(
-                    decoration: const InputDecoration(
-                        labelText: 'ユーザー名',
-                        labelStyle: TextStyle(color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: AppColor.mainColor),
-                        )),
-                    maxLength: 20,
-                    onChanged: (value) {
-                      notifier.saveName(value);
-                    },
-                  ),
-                  TextField(
-                    decoration: const InputDecoration(
-                        labelText: '自己紹介文',
-                        labelStyle: TextStyle(color: Colors.grey),
-                        focusedBorder: UnderlineInputBorder(
-                            borderSide: BorderSide(color: AppColor.mainColor))),
-                    onChanged: (value) {
-                      notifier.saveContent(value);
-                    },
-                  ),
-                ],
-              )),
+            key: notifier.formkey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                      labelText: 'ユーザー名',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: AppColor.mainColor),
+                      )),
+                  maxLength: 20,
+                  onChanged: (value) {
+                    notifier.saveName(value);
+                  },
+                  validator: (String value) {
+                    if (value.isEmpty) {
+                      return '名前を入力してください';
+                    }
+                    return null;
+                  },
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(
+                      labelText: '自己紹介文',
+                      labelStyle: TextStyle(color: Colors.grey),
+                      focusedBorder: UnderlineInputBorder(
+                          borderSide: BorderSide(color: AppColor.mainColor))),
+                  onChanged: (value) {
+                    notifier.saveContent(value);
+                  },
+                ),
+              ],
+            ),
+          ),
           image: _buildImage(),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "プロフィール画像を追加",
+          title: 'プロフィール画像を追加',
           body: '後から編集できます。',
-          image: _buildImage(),
+          image: _buildProfileImage(state),
           footer: RaisedButton(
             onPressed: () {
               notifier.saveProfileImage();
@@ -98,7 +100,7 @@ class OnBoardPage extends StatelessWidget {
               '画像を選択',
               style: TextStyle(color: Colors.white),
             ),
-            color: Colors.lightBlue,
+            color: AppColor.mainColor,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),
@@ -106,14 +108,14 @@ class OnBoardPage extends StatelessWidget {
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Title of last page",
-          bodyWidget: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Text("Click on ", style: bodyStyle),
-              Icon(Icons.edit),
-              Text(" to edit a post", style: bodyStyle),
-            ],
+          title: 'さあ、始めましょう！',
+          bodyWidget: const SizedBox(
+            width: 300,
+            child: Text(
+              'プロフィールはいつでも編集できます！',
+              style: bodyStyle,
+              textAlign: TextAlign.center,
+            ),
           ),
           image: _buildImage(),
           decoration: pageDecoration,
@@ -130,19 +132,36 @@ class OnBoardPage extends StatelessWidget {
           await notifier.pushReplacementHomePage();
         }
       },
-      skip: const Text('Skip'),
+      skip: const Text('スキップ'),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('始める！', style: TextStyle(fontWeight: FontWeight.w600)),
     );
   }
 
   Widget _buildImage() {
     return Align(
       child: Image.network(
-        'https://i2.wp.com/aspgems.com/wp-content/uploads/2020/01/flutter-dart.png?fit=1200%2C600&ssl=1',
-        width: 350,
+        Constants.appImage,
+        width: 250,
       ),
       alignment: Alignment.bottomCenter,
     );
+  }
+
+  Widget _buildProfileImage(AccountState state) {
+    return (state.image != null)
+        ? Align(
+            child: Image.file(
+              state.image,
+              width: 250,
+              fit: BoxFit.cover,
+            ),
+            alignment: Alignment.bottomCenter)
+        : Align(
+            child: Image.network(
+              Constants.appImage,
+              width: 250,
+            ),
+            alignment: Alignment.bottomCenter);
   }
 }

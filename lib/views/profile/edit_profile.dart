@@ -77,20 +77,26 @@ class EditProfilePage extends StatelessWidget {
   }
 
   Widget _circleAvatar(BuildContext context) {
-    final stateImage = context.select((AccountState value) => value);
+    final stateImage =
+        context.select((AccountState value) => value.userInfo.userImage.url);
+    final isloading = context.select((AccountState value) => value.isLoading);
     return Container(
       width: MediaQuery.of(context).size.width / 2,
       height: MediaQuery.of(context).size.width / 2,
       padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.white, width: 5),
-        shape: BoxShape.circle,
-        color: Colors.white,
-        image: DecorationImage(
-            fit: BoxFit.cover,
-            image: NetworkImage(
-                'https://www.appventurez.com/blog/wp-content/uploads/2020/05/kotlin-vs-flutter.jpg')),
-      ),
+      decoration: (isloading)
+          ? BoxDecoration(
+              border: Border.all(color: Colors.white, width: 5),
+              shape: BoxShape.circle,
+              color: Colors.white,
+            )
+          : BoxDecoration(
+              border: Border.all(color: Colors.white, width: 5),
+              shape: BoxShape.circle,
+              color: Colors.white,
+              image: DecorationImage(
+                  fit: BoxFit.cover, image: NetworkImage(stateImage)),
+            ),
     );
   }
 
@@ -148,7 +154,7 @@ class EditProfilePage extends StatelessWidget {
   Widget _textListCalling(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
     final notifier = context.read<AccountNotifier>();
-    // final state = context.read<AccountNotifier>();
+    final state = context.select((AccountState value) => value);
 
     return Container(
       width: double.infinity,
@@ -190,18 +196,18 @@ class EditProfilePage extends StatelessWidget {
                 context: context,
                 hintText: '名前',
                 selectName: 'name',
-                myText: 'a',
+                myText: state.userInfo.name,
                 icon: Icons.ac_unit),
             const SizedBox(height: 16),
             _textFormField(
               context: context,
               hintText: 'メッセージ',
               selectName: 'content',
-              myText: 'a',
+              myText: state.userInfo.content,
               icon: Icons.ac_unit,
             ),
             const SizedBox(height: 16),
-            Container(
+            SizedBox(
               height: 55,
               width: double.infinity,
               child: RaisedButton(
@@ -229,7 +235,7 @@ class EditProfilePage extends StatelessWidget {
 class HeaderCurvedContainer extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
-    Paint paint = Paint()..color = AppColor.mainColor;
+    final Paint paint = Paint()..color = AppColor.mainColor;
     Path path = Path()
       ..relativeLineTo(0, 150)
       ..quadraticBezierTo(size.width / 2, 250.0, size.width, 150)

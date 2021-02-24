@@ -100,15 +100,15 @@ class AccountNotifier extends StateNotifier<AccountState> with LocatorMixin {
     final userData = user.User(id: userId)
       ..name = state.name
       ..content = state.content
-      ..fmcToken = state.token;
+      ..fmcToken = await FirebaseMessaging.instance.getToken();
     if (state.image != null) {
       await storage.saveWithDoc(userData.reference, 'userImage', state.image);
       batch.save(userData);
     } else {
-      final addData = user.User(id: userId)
-        ..userImage.url =
-            'https://firebasestorage.googleapis.com/v0/b/nature-farming-c8b9d.appspot.com/o/user%2F%E8%BE%B2%E6%A5%AD%E6%9D%91%20(1).png?alt=media&token=35dd13e1-39ec-4239-822d-d2e9898d4fa0';
-      batch..save(userData)..save(addData);
+      final test = File(
+          'https://firebasestorage.googleapis.com/v0/b/nature-farming-c8b9d.appspot.com/o/user%2F%E8%BE%B2%E6%A5%AD%E6%9D%91%20(1).png?alt=media&token=35dd13e1-39ec-4239-822d-d2e9898d4fa0');
+      await storage.saveWithDoc(userData.reference, 'userImage', test);
+      batch.save(userData);
     }
     await batch.commit();
     await pushReplacementHomePage();
