@@ -50,7 +50,7 @@ class PostItemPage extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(200)),
                           child: Image.network(
-                            'https://cdn.iconscout.com/icon/free/png-512/flutter-2038877-1720090.png',
+                            postItems[index].userImage,
                             width: 32,
                           ),
                         ),

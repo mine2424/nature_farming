@@ -15,10 +15,11 @@ class _$AccountStateTearOff {
 
 // ignore: unused_element
   _AccountState call(
-      {bool isLoading = false,
+      {bool isLoading = true,
       String name = '',
       String content = '',
       String token = '',
+      StartUpType startUpType = StartUpType.incompleteUser,
       User userInfo,
       File image}) {
     return _AccountState(
@@ -26,6 +27,7 @@ class _$AccountStateTearOff {
       name: name,
       content: content,
       token: token,
+      startUpType: startUpType,
       userInfo: userInfo,
       image: image,
     );
@@ -42,6 +44,7 @@ mixin _$AccountState {
   String get name;
   String get content;
   String get token;
+  StartUpType get startUpType;
   User get userInfo;
   File get image;
 
@@ -59,6 +62,7 @@ abstract class $AccountStateCopyWith<$Res> {
       String name,
       String content,
       String token,
+      StartUpType startUpType,
       User userInfo,
       File image});
 }
@@ -77,6 +81,7 @@ class _$AccountStateCopyWithImpl<$Res> implements $AccountStateCopyWith<$Res> {
     Object name = freezed,
     Object content = freezed,
     Object token = freezed,
+    Object startUpType = freezed,
     Object userInfo = freezed,
     Object image = freezed,
   }) {
@@ -85,6 +90,9 @@ class _$AccountStateCopyWithImpl<$Res> implements $AccountStateCopyWith<$Res> {
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       token: token == freezed ? _value.token : token as String,
+      startUpType: startUpType == freezed
+          ? _value.startUpType
+          : startUpType as StartUpType,
       userInfo: userInfo == freezed ? _value.userInfo : userInfo as User,
       image: image == freezed ? _value.image : image as File,
     ));
@@ -103,6 +111,7 @@ abstract class _$AccountStateCopyWith<$Res>
       String name,
       String content,
       String token,
+      StartUpType startUpType,
       User userInfo,
       File image});
 }
@@ -123,6 +132,7 @@ class __$AccountStateCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
     Object name = freezed,
     Object content = freezed,
     Object token = freezed,
+    Object startUpType = freezed,
     Object userInfo = freezed,
     Object image = freezed,
   }) {
@@ -131,6 +141,9 @@ class __$AccountStateCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
       name: name == freezed ? _value.name : name as String,
       content: content == freezed ? _value.content : content as String,
       token: token == freezed ? _value.token : token as String,
+      startUpType: startUpType == freezed
+          ? _value.startUpType
+          : startUpType as StartUpType,
       userInfo: userInfo == freezed ? _value.userInfo : userInfo as User,
       image: image == freezed ? _value.image : image as File,
     ));
@@ -140,18 +153,20 @@ class __$AccountStateCopyWithImpl<$Res> extends _$AccountStateCopyWithImpl<$Res>
 /// @nodoc
 class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
   const _$_AccountState(
-      {this.isLoading = false,
+      {this.isLoading = true,
       this.name = '',
       this.content = '',
       this.token = '',
+      this.startUpType = StartUpType.incompleteUser,
       this.userInfo,
       this.image})
       : assert(isLoading != null),
         assert(name != null),
         assert(content != null),
-        assert(token != null);
+        assert(token != null),
+        assert(startUpType != null);
 
-  @JsonKey(defaultValue: false)
+  @JsonKey(defaultValue: true)
   @override
   final bool isLoading;
   @JsonKey(defaultValue: '')
@@ -163,6 +178,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
   @JsonKey(defaultValue: '')
   @override
   final String token;
+  @JsonKey(defaultValue: StartUpType.incompleteUser)
+  @override
+  final StartUpType startUpType;
   @override
   final User userInfo;
   @override
@@ -170,7 +188,7 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
 
   @override
   String toString({DiagnosticLevel minLevel = DiagnosticLevel.info}) {
-    return 'AccountState(isLoading: $isLoading, name: $name, content: $content, token: $token, userInfo: $userInfo, image: $image)';
+    return 'AccountState(isLoading: $isLoading, name: $name, content: $content, token: $token, startUpType: $startUpType, userInfo: $userInfo, image: $image)';
   }
 
   @override
@@ -182,6 +200,7 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
       ..add(DiagnosticsProperty('name', name))
       ..add(DiagnosticsProperty('content', content))
       ..add(DiagnosticsProperty('token', token))
+      ..add(DiagnosticsProperty('startUpType', startUpType))
       ..add(DiagnosticsProperty('userInfo', userInfo))
       ..add(DiagnosticsProperty('image', image));
   }
@@ -200,6 +219,9 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
                     .equals(other.content, content)) &&
             (identical(other.token, token) ||
                 const DeepCollectionEquality().equals(other.token, token)) &&
+            (identical(other.startUpType, startUpType) ||
+                const DeepCollectionEquality()
+                    .equals(other.startUpType, startUpType)) &&
             (identical(other.userInfo, userInfo) ||
                 const DeepCollectionEquality()
                     .equals(other.userInfo, userInfo)) &&
@@ -214,6 +236,7 @@ class _$_AccountState with DiagnosticableTreeMixin implements _AccountState {
       const DeepCollectionEquality().hash(name) ^
       const DeepCollectionEquality().hash(content) ^
       const DeepCollectionEquality().hash(token) ^
+      const DeepCollectionEquality().hash(startUpType) ^
       const DeepCollectionEquality().hash(userInfo) ^
       const DeepCollectionEquality().hash(image);
 
@@ -229,6 +252,7 @@ abstract class _AccountState implements AccountState {
       String name,
       String content,
       String token,
+      StartUpType startUpType,
       User userInfo,
       File image}) = _$_AccountState;
 
@@ -240,6 +264,8 @@ abstract class _AccountState implements AccountState {
   String get content;
   @override
   String get token;
+  @override
+  StartUpType get startUpType;
   @override
   User get userInfo;
   @override

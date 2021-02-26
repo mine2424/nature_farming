@@ -55,22 +55,25 @@ class TimeLinePage extends StatelessWidget {
         postItem: postItems[index],
       ),
     );
-    _children.insert(
-      6,
-      Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: AdmobBanner(
-              adUnitId: AdManager.bannerAdUnitId,
-              // adUnitId: BannerAd.testAdUnitId,
-              adSize: AdmobBannerSize.LEADERBOARD,
+    if (postItems.length > 6) {
+      _children.insert(
+        6,
+        Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: AdmobBanner(
+                adUnitId: AdManager.bannerAdUnitId,
+                // adUnitId: BannerAd.testAdUnitId,
+                adSize: AdmobBannerSize.LEADERBOARD,
+              ),
             ),
-          ),
-          const Divider()
-        ],
-      ),
-    );
+            const Divider()
+          ],
+        ),
+      );
+    }
+
     return ListView(children: _children);
   }
 }

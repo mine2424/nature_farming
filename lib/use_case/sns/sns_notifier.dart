@@ -28,7 +28,9 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
   @override
   void initState() {
     super.initState();
-    fetch();
+    if (state.postItems == null) {
+      fetch();
+    }
     if (isFetchReplyMessage) {
       fetchReplyMessage(postDocId);
     }
@@ -79,7 +81,7 @@ class SnsNotifier extends StateNotifier<SnsState> with LocatorMixin {
       id: replyDocId,
       collectionRef: doc.replyMessage.ref,
     )..good = goods + 1;
-    //TODO: create isPressedgood procession
+    // TODO(mine2424): create isPressedgood procession
     // state = state.copyWith(good: true);
     await documentAccessor.update(replyDoc);
   }

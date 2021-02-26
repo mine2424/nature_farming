@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:nature_farming/use_case/account/account_state.dart';
 import 'package:nature_farming/views/onboard/onBoard_page.dart';
 import 'package:provider/provider.dart';
 import 'package:nature_farming/views/home/home_page.dart';
@@ -88,7 +89,9 @@ class _RootPageState extends State<RootPage> {
     // ignore: unrelated_type_equality_checks
     if (loginResult == StartUpType.loggedInUser) {
       print('true');
-      _showMainPage();
+      if (!Provider.of<AccountState>(context, listen: false).isLoading) {
+        _showMainPage();
+      }
     } else {
       print('fuck false');
       _showLoginPage();
